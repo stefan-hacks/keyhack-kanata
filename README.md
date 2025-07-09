@@ -1,141 +1,150 @@
-# Kanata Keyboard Configuration Documentation
+# keyhack-kanata - Efficient Kanata Keyboard Configuration:
 
-## Summary
-This Kanata configuration creates a highly customized keyboard layout with:
-- **Tap-hold behavior** on most keys (200ms tap/hold time)
-- **5 layers** for specialized functions
-- **Modifier keys** remapped to home row positions
-- **Navigation keys** on home row
-- **Media controls**, **workspace management**, and **symbol layers**
-- **Mouse emulation** on navigation layer
+This is a highly customized Kanata keyboard configuration designed for efficient navigation, window management, and text editing. The layout features a base layer with extensive tap-hold functionality and two specialized layers activated via modifier keys.
 
-## Configuration Details
+## Key Features
 
-```lisp
-(defcfg
-  process-unmapped-keys yes  ; Pass unmapped keys to OS
-  log-layer-changes no       ; Disable layer change logging
-)
+- **Base Layer**: QWERTY layout with comprehensive tap-hold modifications
+- **Layer 2**: Workspace/window management (activated by holding `left Meta`)
+- **Layer 3**: Text editing and navigation (activated by holding `Space`)
+- **Tap-Hold System**: All keys use 200ms tap/hold timing
+- **Process Unmapped Keys**: Enabled for better compatibility
 
-(defvar
-  tap-time 200    ; Tap threshold in ms
-  hold-time 200   ; Hold threshold in ms
-)
-```
+## Base Layer (one) - Main Modifications
 
-## Layer Breakdown
+### Function Keys Row
+| Key | Tap Action | Hold Action |
+|-----|------------|-------------|
+| F1  | F1         | Ctrl+Alt+Q  |
+| F2  | F2         | Alt+F2      |
+| F3  | F3         | Ctrl+Alt+↓  |
+| F4  | F4         | Ctrl+Alt+↑  |
+| F5  | F5         | Alt+F5      |
+| F6  | F6         | Alt+F6      |
+| F7  | F7         | Alt+F7      |
+| F8  | F8         | Alt+F8      |
+| F9  | F9         | Alt+F9      |
+| F10 | F10        | Ctrl+Alt+M+L |
+| F11 | F11        | F11         |
+| F12 | F12        | F12         |
 
-### Layer One (Base Layer)
-The main typing layer with tap-hold mods and navigation:
+### Alphanumeric Keys
+| Key | Tap Action | Hold Action |
+|-----|------------|-------------|
+| ` | ` | Shift+` |
+| 1-0 | Number | Shift+Number |
+| - | - | Shift+- |
+| = | = | Shift+= |
+| Q | Q | Ctrl+Q |
+| W | W | Ctrl+W |
+| E | E | Ctrl+E |
+| R | R | Ctrl+R |
+| T | T | Ctrl+T |
+| Y | Y | Home |
+| U | U | Page Down |
+| I | I | Page Up |
+| O | O | End |
+| P | P | Ctrl+M+/ |
+| [ | [ | Shift+[ |
+| ] | ] | Shift+] |
+| \ | \ | Shift+\ |
+| A | A | Ctrl+A |
+| S | S | Meta |
+| D | D | Alt |
+| F | F | Ctrl |
+| H | H | Shift+` |
+| J | J | Right Ctrl |
+| K | K | Right Alt |
+| L | L | Right Meta |
+| ; | ; | Shift+; |
+| ' | ' | Shift+' |
+| Z | Z | Ctrl+Z |
+| X | X | Ctrl+X |
+| C | C | Ctrl+C |
+| V | V | Ctrl+V |
+| , | , | Shift+, |
+| . | . | Shift+. |
+| / | / | Shift+/ |
 
-| Position             | Key     | Behavior                          |
-|----------------------|---------|-----------------------------------|
-| **Top Row**          | `caps`  | Toggle Caps Lock                 |
-|                      | `F1-F12`| Standard function keys           |
-| **Number Row**       | `1-0`   | Standard numbers                 |
-|                      | `-/=`  | Minus/Equal                      |
-|                      | `bspc` | Backspace                        |
-| **Home Row (Left)**  | `a`     | Tap: `a`, Hold: `Shift`          |
-|                      | `s`     | Tap: `s`, Hold: `Super`          |
-|                      | `d`     | Tap: `d`, Hold: `Alt`            |
-|                      | `f`     | Tap: `f`, Hold: `Ctrl`           |
-| **Home Row (Right)** | `h`     | Tap: `h`, Hold: `~`              |
-|                      | `j`     | Tap: `j`, Hold: `Ctrl`           |
-|                      | `k`     | Tap: `k`, Hold: `Alt`            |
-|                      | `l`     | Tap: `l`, Hold: `Super`          |
-| **Nav Cluster**      | `y`     | Tap: `y`, Hold: `Home`           |
-|                      | `u`     | Tap: `u`, Hold: `Page Down`      |
-|                      | `i`     | Tap: `i`, Hold: `Page Up`        |
-|                      | `o`     | Tap: `o`, Hold: `End`            |
-| **Modifiers**        | `lmet`  | Tap: Super, Hold: Layer 2        |
-|                      | `rmet`  | Tap: Super, Hold: Layer 3        |
-|                      | `rctl`  | Tap: Ctrl, Hold: Layer 4/5 toggle|
+### Special Keys
+| Key | Tap Action | Hold Action |
+|-----|------------|-------------|
+| Left Meta | Tap: Meta | Hold: Toggle Layer 2 |
+| Space | Tap: Space | Hold: Toggle Layer 3 |
+| Backspace | Backspace | Delete |
+| Enter | Enter | Right Alt |
+| Caps Lock | Escape | N/A |
 
-### Layer Two (Workspace/Window Management)
-Activated by holding left Super key:
+## Layer 2 (Workspace/Window Management)
+*Activated by holding Left Meta*
 
-| Position        | Key     | Function                         |
-|-----------------|---------|----------------------------------|
-| **Top Row**     | `F1`    | Quit app (`Ctrl-Alt-Q`)          |
-|                 | `F2`    | App menu (`Alt-F2`)              |
-|                 | `F3/F4` | Switch desktops                  |
-|                 | `F5-F8` | Volume/mic controls              |
-|                 | `F9`    | Screenshot                       |
-|                 | `F10`   | Lock screen                      |
-| **Navigation**  | `y`     | Move workspace left              |
-|                 | `u`     | Move window left                 |
-|                 | `i`     | Move window right                |
-|                 | `o`     | Move workspace right             |
-| **Media**       | `m`     | Media previous                   |
-|                 | `,`     | Media next                       |
-|                 | `.`     | Play/Pause                       |
-| **Numpad**      | `n`     | `0`                              |
-|                 | `m`     | `$` (Shift+4)                    |
+### Navigation Controls
+| Key | Function |
+|-----|----------|
+| Y | Shift+Meta+Page Up (Move window left) |
+| U | Desktop Left |
+| I | Desktop Down |
+| O | Desktop Up |
+| P | Desktop Right |
+| H | Shift+Meta+Page Down (Move window right) |
+| J | Window Left |
+| K | Window Down |
+| L | Window Up |
+| ; | Window Right |
 
-### Layer Three (Navigation/Mouse)
-Activated by holding right Super key:
+### Workspace Management
+| Key | Function |
+|-----|----------|
+| B | Workspace 1 |
+| N | Workspace 2 |
+| M | Workspace 3 |
+| , | Workspace 4 |
+| P | Ctrl+M+/ |
+| [ | Ctrl+M+, |
+| ] | Ctrl+M+. |
 
-| Position        | Key     | Function                         |
-|-----------------|---------|----------------------------------|
-| **Mouse**       | `y`     | Mouse left                       |
-|                 | `u`     | Mouse down                       |
-|                 | `i`     | Mouse up                         |
-|                 | `o`     | Mouse right                      |
-| **Arrow Keys**  | `h`     | Left arrow                       |
-|                 | `j`     | Down arrow                       |
-|                 | `k`     | Up arrow                         |
-|                 | `l`     | Right arrow                      |
-| **Editing**     | `[`     | Delete to line start (`Ctrl-U`)  |
-|                 | `]`     | Delete to line end (`Ctrl-K`)    |
-|                 | `,`     | Delete word left (`Ctrl-Backspace`)|
-|                 | `.`     | Delete word right (`Ctrl-Delete`)|
+## Layer 3 (Text Editing)
+*Activated by holding Space*
 
-### Layer Four (Symbols)
-Activated by holding right Ctrl key:
+### Navigation & Editing
+| Key | Tap Action | Hold Action |
+|-----|------------|-------------|
+| Y | Mouse Wheel Left | N/A |
+| U | Mouse Wheel Down | N/A |
+| I | Mouse Wheel Up | N/A |
+| O | Mouse Wheel Right | N/A |
+| H | Left Arrow | N/A |
+| J | Down Arrow | N/A |
+| K | Up Arrow | N/A |
+| L | Right Arrow | N/A |
+| [ | Ctrl+U | Ctrl+Backspace |
+| ] | Ctrl+K | Shift+Ctrl+Delete |
+| , | Ctrl+Backspace | Ctrl+W |
+| . | Delete Word Forward | Alt+D |
 
-| Position        | Key     | Symbol                           |
-|-----------------|---------|----------------------------------|
-| **Modified**    | `q`     | `!` (Shift+1)                    |
-|                 | `w`     | `@` (Shift+2)                    |
-|                 | `e`     | `#` (Shift+3)                    |
-|                 | `r`     | `$` (Shift+4)                    |
-|                 | `t`     | `%` (Shift+5)                    |
-|                 | `a`     | `^` (Shift+6)                    |
-|                 | `s`     | `&` (Shift+7)                    |
-|                 | `d`     | `*` (Shift+8)                    |
-| **F12 Key**     | `lrld`  | Reload Kanata config             |
+### Special Functions
+| Key | Function |
+|-----|----------|
+| Backspace | Backspace |
+| Space | Space |
+| Delete | Delete |
 
-### Layer Five (Brackets)
-Alternate symbols layer:
+## Configuration Notes
 
-| Position        | Key     | Symbol                           |
-|-----------------|---------|----------------------------------|
-| **Brackets**    | `q`     | `(` (Shift+9)                    |
-|                 | `w`     | `)` (Shift+0)                    |
-|                 | `e`     | `[`                              |
-|                 | `r`     | `]`                              |
-|                 | `t`     | `\|` (Shift+\\)                  |
-| **Braces**      | `a`     | `{` (Shift+[)                    |
-|                 | `s`     | `}` (Shift+])                    |
-| **Quotes**      | `z`     | `'`                              |
-|                 | `x`     | `"` (Shift+')                    |
+1. **Tap-Hold Timing**: 
+   - Tap time: 200ms
+   - Hold time: 200ms
+   - Consistent across all tap-hold keys
 
-## Key Aliases Reference
-```lisp
-;; Modifiers
-al   = a + Shift      ss   = s + Super
-dd   = d + Alt       ff   = f + Ctrl
+2. **Special Features**:
+   - F12 on Layer 2 reloads configuration
+   - Mouse wheel emulation on Layer 3
+   - Comprehensive window/workspace management
+   - Text editing/navigation shortcuts
 
-;; Navigation
-yy   = y + Home      uu   = u + Page Down
-ii   = i + Page Up   oo   = o + End
+3. **Design Philosophy**:
+   - Home row keys (HJKL) handle navigation
+   - Modifier keys on home position (SDF = Meta/Alt/Ctrl)
+   - Layer switching via frequently used keys (Space/Meta)
 
-;; Editing
-aa   = a + Ctrl-A    zz   = z + Ctrl-Z
-xx   = x + Ctrl-X    cc   = c + Ctrl-C
-vv   = v + Ctrl-V
-
-;; Special
-l2   = Super (Layer 2)   l3   = Super (Layer 3)
-l4   = Ctrl (Layer 4)    l5   = Ctrl (Layer 5)
-```
+To use this configuration, load it with Kanata and ensure your OS keyboard layout matches the base layer (QWERTY).
