@@ -67,6 +67,8 @@
   pp (tap-hold $tap-time $hold-time C-M-/ C-M-/)
   pt (tap-hold $tap-time $hold-time C-M-, C-M-,)
   nt (tap-hold $tap-time $hold-time C-M-. C-M-.)
+  mls (tap-hold $tap-time $hold-time S-M-h S-M-h)
+  mrs (tap-hold $tap-time $hold-time S-M-l S-M-l)
   w1 (tap-hold $tap-time $hold-time A-M-1 A-M-1)
   w2 (tap-hold $tap-time $hold-time A-M-2 A-M-2)
   w3 (tap-hold $tap-time $hold-time A-M-3 A-M-3)
@@ -119,12 +121,12 @@
   lctl @l2  @la           @l3             @ra  _    _
 )
 
-;; Workspaces, Windows, Panes layer - left hand on left Ctrl key  
+;; Workspaces, Windows, Panes layer - left hand on left Windows key  
 (deflayer two 
   caps _    _    _    _    _    _    _    _    _    _    _    lrld
   grv  _    _    _    _    _    6    7    8    9    0    _    _    bspc
   tab  _    _    _    _    _    @wtl @dsl @dsr @wtr @pp  @pt  @nt  \
-  esc  _    _    _    _    _    @rpl @rpd @rpu @rpr _    _  ret
+  esc  _    _    _    _    _    @rpl @rpd @rpu @rpr @mls @mrs ret
   lsft _    _    _    _    _    @w1  @w2  @w3  @w4  _    rsft
   _    _    _           _                 _    _    _
 )
