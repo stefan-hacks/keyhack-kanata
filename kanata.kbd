@@ -1,663 +1,146 @@
-#|
-╔══════════════════════════════════════════════════════════════════════════════╗
-║            KANATA v1.10  —  KITTY + GNOME POWER-USER LAYOUT                ║
-║                                                                              ║
-║  Hardware : SteelSeries Apex 3 TKL  (US QWERTY scan codes)                 ║
-║  OS       : Debian 13 Trixie  —  GNOME 48  —  Wayland                      ║
-║  Terminal : kitty  (Catppuccin Mocha, splits layout, scrollback-nvim)       ║
-║                                                                              ║
-║  LAYERS (6)                                                                  ║
-║    base     – QWERTY with home-row mods, number-row symbols, thumb layers  ║
-║    edit     – vi-style nav, arrow keys, word/line delete, mouse-wheel       ║
-║    win      – GNOME workspace & window snap (was "two")                     ║
-║    kitty    – ALL kitty pane + tab + scrollback bindings                    ║
-║    kittytab – kitty tab-number goto (alt+1-9)                               ║
-║    fn       – F-keys, live-reload, one-shots, dynamic-macro                 ║
-║                                                                              ║
-║  KEY DESIGN DECISIONS (vs previous config)                                   ║
-║    • layer-toggle → layer-while-held  (layers release on key-up now)       ║
-║    • base tap-hold → tap-hold-press   (resolves on NEXT key, no 200ms lag) ║
-║    • Esc stays Esc on base (critical for vim / shell)                       ║
-║    • CapsLock → tap-dance: 1=fn layer, 2=kitty layer, 3=kittytab layer     ║
-║    • All kitty alt+hjkl pane-nav, alt+shift+hjkl resize, ctrl+shift+alt    ║
-║      pane-move, scrollback-nvim, broadcast, splits, tabs → kitty layer     ║
-║    • Kitty tab-goto (alt+1..9) lives on kittytab (caps ×3 then hold)       ║
-║    • Chords: j+k = kitty hsplit, k+l = kitty vsplit                        ║
-║    • Leader key on rmet: git macros, kitty config reload                    ║
-║    • One-shot mods on fn layer (a=OS-Shift, s=OS-Ctrl, d=OS-Alt, f=OS-Met)║
-║    • Dynamic macro record/play on fn layer                                   ║
-║                                                                              ║
-║  PRESERVED FROM YOUR ORIGINAL                                                ║
-║    • Number-row: tap = digit, hold = shifted symbol  (1→! 2→@ etc.)       ║
-║    • QWERTY hold shortcuts: q→C-q  w→C-w  r→C-r  t→C-t                    ║
-║    • Home-row mods: s→Meta  d→Alt  f→Ctrl  (left); j→RCtl  k→RAlt  l→RMet ║
-║    • h on base → tap=h  hold=backtick/tilde (S-grv)                        ║
-║    • Bspc tap-hold: tap=Bspc  hold=Del                                     ║
-║    • Ret tap-hold: tap=Ret  hold=RAlt                                       ║
-║    • edit layer (Space held): arrows on hjkl, word-delete on bottom row    ║
-║    • win layer (LMet held): Meta+arrows snap, workspace 1-4, monitor move  ║
-║    • F-row tap-hold shortcuts preserved (mute, vol, screenshot, etc.)       ║
-║                                                                              ║
-║  EMERGENCY EXIT : hold  Lctl + Space + Esc  (raw, before any remap)        ║
-╚══════════════════════════════════════════════════════════════════════════════╝
-|#
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 1.  GLOBAL CONFIG
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     process-unmapped-keys   – keys not in defsrc still reach the OS.
-;;                                Keeps media-row keys working transparently.
-;;     danger-enable-cmd       – enables (cmd …) for wtype unicode on Wayland.
-;;     log-layer-changes       – prints layer switches to kanata log.
-;;                                Set to "no" in production; "yes" while tuning.
-;;     concurrent-tap-hold     – required for chords-v2 to fire correctly
-;;                                alongside tap-hold-press keys.
-;;     sequence-timeout        – leader-key sequences auto-fire after this ms
-;;                                of inactivity (or on match, whichever first).
-
 (defcfg
-  process-unmapped-keys   yes
-  danger-enable-cmd       yes
-  log-layer-changes       yes
-  concurrent-tap-hold     yes
-  sequence-timeout        450
+  process-unmapped-keys yes
+  log-layer-changes no
 )
 
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 2.  SOURCE KEY MAP  –  Apex 3 TKL  (includes F-row unlike previous config)
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     Physical layout exactly as the keyboard reports scan codes.
-;;     F1-F12 are included so we can remap them.
+;; Variables
+(defvar
+ tap-time 200
+ hold-time 200
+)
 
+;; Defsrc contains the original unmapped keyboard layout. Often this is qwerty.
 (defsrc
-  ;; ── F-row ───────────────────────────────────────────────────────────────
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
-  ;; ── number row ──────────────────────────────────────────────────────────
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12 
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
-  ;; ── QWERTY row ──────────────────────────────────────────────────────────
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-  ;; ── home row ────────────────────────────────────────────────────────────
   caps a    s    d    f    g    h    j    k    l    ;    '    ret
-  ;; ── bottom alpha row ────────────────────────────────────────────────────
   lsft z    x    c    v    b    n    m    ,    .    /    rsft
-  ;; ── modifier / space ────────────────────────────────────────────────────
   lctl lmet lalt           spc            ralt rmet rctl
 )
 
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 3.  TIMING VARIABLES
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     $tt  – tap timeout.   Key released faster than this → tap action.
-;;     $ht  – hold timeout.  Key held longer alone without another key → hold.
-;;            With tap-hold-press the hold fires on NEXT key press, so $ht
-;;            only matters if you hold the key with no other key pressed.
-;;     $td  – tap-dance inter-tap window.
-;;     $os  – one-shot sticky-mod lifetime.
-
-(defvar
-  tt   170
-  ht   220
-  td   240
-  os   900
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 4.  LAYER ACTIVATOR ALIASES
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     IMPORTANT: previous config used layer-toggle which STAYS on after
-;;     release.  We switch to layer-while-held so layers pop on key-up.
-;;     This matches how you actually used them (hold Meta for workspaces,
-;;     hold Space for editing).
-
+;; Aliases
 (defalias
-  edit    (layer-while-held edit)       ;; Space held  → editing layer
-  win     (layer-while-held win)        ;; LMet held   → workspace/window layer
-  kitty   (layer-while-held kitty)      ;; Caps ×2 held → kitty pane layer
-  kittytab (layer-while-held kittytab)  ;; Caps ×3 held → kitty tab-goto layer
-  fn      (layer-while-held fn)         ;; Caps ×1 held → fn / one-shot layer
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 5.  CAPS LOCK TAP-DANCE
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     Caps Lock is never sent to the OS.  It becomes a three-way tap-dance:
-;;       1 tap + hold → fn layer        (F-keys, one-shots, dyn-macro)
-;;       2 taps + hold → kitty layer    (pane nav/resize/move/split/scrollback)
-;;       3 taps + hold → kittytab layer (alt+1..9 tab switching)
-;;     Each option activates while held after the final tap.
-
-(defalias
-  caps-td (tap-dance $td (
-    @fn
-    @kitty
-    @kittytab
-  ))
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 6.  BASE-LAYER ALIASES  –  home-row mods
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     Upgraded from plain tap-hold (200ms wait) to tap-hold-PRESS.
-;;     tap-hold-press resolves hold the instant a second key is pressed –
-;;     zero perceived latency for modifier combos while typing.
-;;     Tap/hold behaviour is otherwise identical to your original layout.
-;;
-;;     Left hand:
-;;       a → tap: a       hold: Ctrl+A  (select-all – your original)
-;;       s → tap: s       hold: Left Meta  (Super)
-;;       d → tap: d       hold: Left Alt
-;;       f → tap: f       hold: Left Ctrl
-;;     Right hand (preserved from original):
-;;       h → tap: h       hold: S-grv  (backtick/tilde – your original "hh")
-;;       j → tap: j       hold: Right Ctrl
-;;       k → tap: k       hold: Right Alt
-;;       l → tap: l       hold: Right Meta
-
-(defalias
-  ;; ── left home-row ───────────────────────────────────────────────────────
-  aa  (tap-hold-press $tt $ht a    C-a)     ;; preserved: tap a, hold Ctrl+A
-  ss  (tap-hold-press $tt $ht s    lmet)    ;; tap s, hold Meta
-  dd  (tap-hold-press $tt $ht d    lalt)    ;; tap d, hold Alt
-  ff  (tap-hold-press $tt $ht f    lctl)    ;; tap f, hold Ctrl
-  ;; ── right home-row ──────────────────────────────────────────────────────
-  hh  (tap-hold-press $tt $ht h    S-grv)   ;; tap h, hold ~ (your original)
-  jj  (tap-hold-press $tt $ht j    rctl)    ;; tap j, hold RCtrl
-  kk  (tap-hold-press $tt $ht k    ralt)    ;; tap k, hold RAlt
-  ll  (tap-hold-press $tt $ht l    rmet)    ;; tap l, hold RMeta
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 7.  BASE-LAYER ALIASES  –  number row (tap digit / hold symbol)
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     Preserved exactly from your original.  Upgraded to tap-hold-press
-;;     for the same zero-lag benefit.
-
-(defalias
-  gm  (tap-hold-press $tt $ht grv  S-grv)   ;; ` / ~
-  1m  (tap-hold-press $tt $ht 1    S-1)     ;; 1 / !
-  2m  (tap-hold-press $tt $ht 2    S-2)     ;; 2 / @
-  3m  (tap-hold-press $tt $ht 3    S-3)     ;; 3 / #
-  4m  (tap-hold-press $tt $ht 4    S-4)     ;; 4 / $
-  5m  (tap-hold-press $tt $ht 5    S-5)     ;; 5 / %
-  6m  (tap-hold-press $tt $ht 6    S-6)     ;; 6 / ^
-  7m  (tap-hold-press $tt $ht 7    S-7)     ;; 7 / &
-  8m  (tap-hold-press $tt $ht 8    S-8)     ;; 8 / *
-  9m  (tap-hold-press $tt $ht 9    S-9)     ;; 9 / (
-  0m  (tap-hold-press $tt $ht 0    S-0)     ;; 0 / )
-  mi  (tap-hold-press $tt $ht -    S--)     ;; - / _
-  pl  (tap-hold-press $tt $ht =    S-=)     ;; = / +
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 8.  BASE-LAYER ALIASES  –  QWERTY row hold-shortcuts
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     Preserved from original: q/w/r/t hold Ctrl+letter.
-;;     y/u/i/o hold → Home / PgDn / PgUp / End.
-;;     e is left as plain 'e' (no hold in original either).
-;;     p is left plain.
-
-(defalias
-  qq  (tap-hold-press $tt $ht q    C-q)     ;; q / Ctrl+Q
-  ww  (tap-hold-press $tt $ht w    C-w)     ;; w / Ctrl+W
-  rr  (tap-hold-press $tt $ht r    C-r)     ;; r / Ctrl+R
-  tt  (tap-hold-press $tt $ht t    C-t)     ;; t / Ctrl+T  (new tab in kitty!)
-  yy  (tap-hold-press $tt $ht y    hom)     ;; y / Home
-  uu  (tap-hold-press $tt $ht u    pgdn)    ;; u / PgDn
-  ii  (tap-hold-press $tt $ht i    pgup)    ;; i / PgUp
-  oo  (tap-hold-press $tt $ht o    end)     ;; o / End
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 9.  BASE-LAYER ALIASES  –  brackets, punctuation, bottom-row
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     Preserved from original.  All upgraded to tap-hold-press.
-
-(defalias
-  so  (tap-hold-press $tt $ht [    S-[)     ;; [ / {
-  sc  (tap-hold-press $tt $ht ]    S-])     ;; ] / }
-  pi  (tap-hold-press $tt $ht \    S-\)     ;; \ / |
-  se  (tap-hold-press $tt $ht ;    S-;)     ;; ; / :
-  ap  (tap-hold-press $tt $ht '    S-')     ;; ' / "
-  zz  (tap-hold-press $tt $ht z    C-z)     ;; z / Ctrl+Z (undo)
-  xx  (tap-hold-press $tt $ht x    C-x)     ;; x / Ctrl+X (cut)
-  cc  (tap-hold-press $tt $ht c    C-c)     ;; c / Ctrl+C (copy / SIGINT)
-  vv  (tap-hold-press $tt $ht v    C-v)     ;; v / Ctrl+V (paste)
-  co  (tap-hold-press $tt $ht ,    S-,)     ;; , / <
-  fu  (tap-hold-press $tt $ht .    S-.)     ;; . / >
-  fs  (tap-hold-press $tt $ht /    S-/)     ;; / / ?
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 10. BASE-LAYER ALIASES  –  thumb row special keys
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     la  – Backspace tap / Delete hold  (preserved from original)
-;;     ra  – Return tap / Right-Alt hold  (preserved from original)
-;;     ldr – leader key (right Meta): activates sequence mode for macros
-
-(defalias
-  la  (tap-hold-press $tt $ht bspc del)     ;; Bspc / Del
-  ra  (tap-hold-press $tt $ht ret  ralt)    ;; Ret / RAlt
-  ldr ldr                                    ;; leader key (sequence mode)
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 11. F-ROW ALIASES  –  tap = F-key, hold = your original system shortcuts
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     Preserved exactly from your original "one" layer F-row bindings.
-;;     Upgraded to tap-hold-press.
-
-(defalias
-  qtd (tap-hold-press $tt $ht f1   C-A-q)          ;; F1  / Ctrl+Alt+Q
-  pum (tap-hold-press $tt $ht f2   A-f2)           ;; F2  / Alt+F2 (run dialog)
-  dsb (tap-hold-press $tt $ht f3   C-M-down)       ;; F3  / Ctrl+Meta+Down
-  isb (tap-hold-press $tt $ht f4   C-M-up)         ;; F4  / Ctrl+Meta+Up
-  mut (tap-hold-press $tt $ht f5   A-f5)           ;; F5  / mute
-  vdn (tap-hold-press $tt $ht f6   A-f6)           ;; F6  / vol down
-  vup (tap-hold-press $tt $ht f7   A-f7)           ;; F7  / vol up
-  mic (tap-hold-press $tt $ht f8   A-f8)           ;; F8  / mic toggle
-  psc (tap-hold-press $tt $ht f9   A-f9)           ;; F9  / screenshot
-  lts (tap-hold-press $tt $ht f10  C-A-M-l)        ;; F10 / Ctrl+Alt+Meta+L
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 12. EDIT-LAYER ALIASES  –  word & line delete (preserved from "three")
-;; ─────────────────────────────────────────────────────────────────────────────
-
-(defalias
-  ;; word delete
-  tbd (tap-hold-press $tt $ht ,    C-w)         ;; , / Ctrl+W (delete word back)
-  tfd (tap-hold-press $tt $ht .    A-d)         ;; . / Alt+D  (delete word fwd)
-  ;; line delete  (on [ and ])
-  dtb (tap-hold-press $tt $ht [    C-u)         ;; [ / Ctrl+U  (delete to line start)
-  dte (tap-hold-press $tt $ht ]    C-k)         ;; ] / Ctrl+K  (delete to line end)
-  ;; word delete (alternate positions on n m)
-  dwb (tap-hold-press $tt $ht n    C-bspc)      ;; n / Ctrl+Bspc  (delete word back)
-  dwf (tap-hold-press $tt $ht m    C-del)       ;; m / Ctrl+Del   (delete word fwd)
-  ;; mouse wheel (on y u i o positions in edit layer)
-  mwl (mwheel-left  50 120)
-  mwd (mwheel-down  50 120)
-  mwu (mwheel-up    50 120)
+  l2 (tap-hold $tap-time $hold-time lmet (layer-toggle two))   
+  l3 (tap-hold $tap-time $hold-time spc (layer-toggle three)) 
+  ss (tap-hold $tap-time $hold-time s lmet)
+  dd (tap-hold $tap-time $hold-time d lalt)
+  ff (tap-hold $tap-time $hold-time f lctl)
+  hh (tap-hold $tap-time $hold-time h S-grv)
+  jj (tap-hold $tap-time $hold-time j rctl)
+  kk (tap-hold $tap-time $hold-time k ralt)
+  ll (tap-hold $tap-time $hold-time l rmet)
+  la (tap-hold $tap-time $hold-time bspc del)
+  ra (tap-hold $tap-time $hold-time ret ralt)
+  qtd (tap-hold $tap-time $hold-time f1 C-A-q)
+  pum (tap-hold $tap-time $hold-time f2 A-f2)
+  dsb (tap-hold $tap-time $hold-time f3 C-M-down) 
+  isb (tap-hold $tap-time $hold-time f4 C-M-up)
+  mut (tap-hold $tap-time $hold-time f5 A-f5)
+  vdn (tap-hold $tap-time $hold-time f6 A-f6)
+  vup (tap-hold $tap-time $hold-time f7 A-f7)
+  mic (tap-hold $tap-time $hold-time f8 A-f8)
+  psc (tap-hold $tap-time $hold-time f9 A-f9)
+  lts (tap-hold $tap-time $hold-time f10 C-A-M-l)
+  gm (tap-hold $tap-time $hold-time grv S-grv)
+  1m (tap-hold $tap-time $hold-time 1 S-1)
+  2m (tap-hold $tap-time $hold-time 2 S-2)
+  3m (tap-hold $tap-time $hold-time 3 S-3)
+  4m (tap-hold $tap-time $hold-time 4 S-4)
+  5m (tap-hold $tap-time $hold-time 5 S-5)
+  6m (tap-hold $tap-time $hold-time 6 S-6)
+  7m (tap-hold $tap-time $hold-time 7 S-7)
+  8m (tap-hold $tap-time $hold-time 8 S-8)
+  9m (tap-hold $tap-time $hold-time 9 S-9)
+  0m (tap-hold $tap-time $hold-time 0 S-0)
+  mi (tap-hold $tap-time $hold-time - S--)
+  pl (tap-hold $tap-time $hold-time = S-=)
+  qq (tap-hold $tap-time $hold-time q C-q)
+  ww (tap-hold $tap-time $hold-time w C-w)  
+  ee (tap-hold $tap-time $hold-time e C-e)
+  rr (tap-hold $tap-time $hold-time r C-r)
+  tt (tap-hold $tap-time $hold-time t C-t)
+  yy (tap-hold $tap-time $hold-time y home) 
+  uu (tap-hold $tap-time $hold-time u pgdn)
+  ii (tap-hold $tap-time $hold-time i pgup)
+  oo (tap-hold $tap-time $hold-time o end)
+  pp (tap-hold $tap-time $hold-time C-M-/ C-M-/)
+  pt (tap-hold $tap-time $hold-time C-M-, C-M-,)
+  nt (tap-hold $tap-time $hold-time C-M-. C-M-.)
+  mls (tap-hold $tap-time $hold-time S-M-h S-M-h)
+  mrs (tap-hold $tap-time $hold-time S-M-l S-M-l)
+  w1 (tap-hold $tap-time $hold-time A-M-1 A-M-1)
+  w2 (tap-hold $tap-time $hold-time A-M-2 A-M-2)
+  w3 (tap-hold $tap-time $hold-time A-M-3 A-M-3)
+  w4 (tap-hold $tap-time $hold-time A-M-4 A-M-4)
+  so (tap-hold $tap-time $hold-time [ S-[)
+  sc (tap-hold $tap-time $hold-time ] S-])
+  pi (tap-hold $tap-time $hold-time \ S-\)
+  aa (tap-hold $tap-time $hold-time a C-a)
+  se (tap-hold $tap-time $hold-time ; S-;)
+  ap (tap-hold $tap-time $hold-time ' S-')
+  zz (tap-hold $tap-time $hold-time z C-z)
+  xx (tap-hold $tap-time $hold-time x C-x)
+  cc (tap-hold $tap-time $hold-time c C-c)
+  vv (tap-hold $tap-time $hold-time v C-v)
+  co (tap-hold $tap-time $hold-time , S-,)
+  fu (tap-hold $tap-time $hold-time . S-.)
+  fs (tap-hold $tap-time $hold-time / S-/)
+  tbd (tap-hold $tap-time $hold-time , C-w)
+  tfd (tap-hold $tap-time $hold-time . A-d)
+  dtb (tap-hold $tap-time $hold-time [ C-u)
+  dte (tap-hold $tap-time $hold-time ] C-k)
+  dwb (tap-hold $tap-time $hold-time , C-bspc)
+  dwf (tap-hold $tap-time $hold-time . C-del)
+  dsl (tap-hold $tap-time $hold-time A-f11 A-f11)
+  dsr (tap-hold $tap-time $hold-time A-f12 A-f12)
+  bdl (tap-hold $tap-time $hold-time [ C-bspc)
+  fdl (tap-hold $tap-time $hold-time ] S-C-del)
+  wtl (tap-hold $tap-time $hold-time S-M-pgup S-M-pgup)
+  wtr (tap-hold $tap-time $hold-time S-M-pgdn S-M-pgdn)
+  rpl (tap-hold $tap-time $hold-time M-left M-left)
+  rpd (tap-hold $tap-time $hold-time M-down M-down)
+  rpu (tap-hold $tap-time $hold-time M-up M-up)
+  rpr (tap-hold $tap-time $hold-time M-rght M-rght)
+  mpp (tap-hold $tap-time $hold-time C-M-/ C-M-/)
+  msf (tap-hold $tap-time $hold-time C-M-. C-M-.)
+  msb (tap-hold $tap-time $hold-time C-M-, C-M-,)
+  mwl (mwheel-left 50 120)
+  mwd (mwheel-down 50 120)
+  mwu (mwheel-up 50 120)
   mwr (mwheel-right 50 120)
 )
 
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 13. WIN-LAYER ALIASES  –  workspace & window (preserved from "two")
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     These are the GNOME shortcuts you had on layer "two".
-;;     Kept on the same physical key positions.
-
-(defalias
-  ;; workspace switch (bottom row n m , .)
-  w1  M-Digit1       w2  M-Digit2       w3  M-Digit3       w4  M-Digit4
-  ;; tab reorder (on [ ] positions)
-  wtl S-C-Prior      wtr S-C-Next
-  ;; desktop switch (on p position)
-  pp  C-M-/
-  ;; tab prev/next
-  pt  C-M-,          nt  C-M-.
-  ;; window snap (Meta + arrows, on h j k l)
-  rpl M-left         rpd M-down         rpu M-up           rpr M-rght
-  ;; move to monitor
-  mls S-M-h          mrs S-M-l
-  ;; desktop slide (on y u positions)
-  dsl A-f11          dsr A-f12
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 14. KITTY-LAYER ALIASES  –  every active kitty keybinding
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     This is the new layer that fills the gap in your previous config.
-;;     Every active (non-commented) kitty.conf map directive is reachable here.
-;;
-;;     kitty pane navigation: alt+h/j/k/l   → neighboring_window
-;;     kitty pane resize:     alt+shift+h/j/k/l → resize_window
-;;     kitty pane move:       ctrl+shift+alt+h/j/k/l → move_window
-;;     kitty splits:          ctrl+alt+- (hsplit) and ctrl+alt+\ (vsplit)
-;;     kitty scrollback nvim: ctrl+shift+h (full) and ctrl+shift+g (last cmd)
-;;     kitty broadcast:       ctrl+shift+b
-;;     kitty layout rotate:   ctrl+alt+space
-;;     kitty URL hints:       ctrl+shift+u
-;;     kitty new window cwd:  ctrl+shift+enter
-;;     kitty close tab:       ctrl+shift+w
-;;     kitty new tab cwd:     ctrl+shift+n
-;;     kitty float/pin:       ctrl+shift+alt+f / ctrl+shift+alt+p
-;;     kitty config reload:   ctrl+alt+r
-;;     kitty font size:       ctrl+= (bigger) / ctrl+- (smaller)
-
-(defalias
-  ;; ── pane navigation (alt + hjkl) ──────────────────────────────────────
-  kn-l  A-h             ;; neighboring_window left
-  kn-d  A-j             ;; neighboring_window down
-  kn-u  A-k             ;; neighboring_window up
-  kn-r  A-l             ;; neighboring_window right
-
-  ;; ── pane resize (alt+shift + hjkl) ────────────────────────────────────
-  kr-w  A-S-h           ;; resize wider
-  kr-s  A-S-j           ;; resize shorter
-  kr-t  A-S-k           ;; resize taller
-  kr-n  A-S-l           ;; resize narrower
-
-  ;; ── pane move (ctrl+shift+alt + hjkl) ─────────────────────────────────
-  km-l  C-S-A-h         ;; move_window left
-  km-d  C-S-A-j         ;; move_window down
-  km-u  C-S-A-k         ;; move_window up
-  km-r  C-S-A-l         ;; move_window right
-
-  ;; ── splits ────────────────────────────────────────────────────────────
-  k-hs  C-A--           ;; hsplit  (ctrl+alt+minus)
-  k-vs  C-A-\           ;; vsplit  (ctrl+alt+backslash)
-
-  ;; ── scrollback nvim ───────────────────────────────────────────────────
-  k-sb  C-S-h           ;; full scrollback in nvim
-  k-sl  C-S-g           ;; last command output in nvim
-
-  ;; ── broadcast ─────────────────────────────────────────────────────────
-  k-bc  C-S-b           ;; kitten broadcast
-
-  ;; ── layout rotate ─────────────────────────────────────────────────────
-  k-lr  C-A-spc         ;; layout_action rotate
-
-  ;; ── URL hints ─────────────────────────────────────────────────────────
-  k-url C-S-u           ;; open_url_with_hints
-
-  ;; ── new window / tab with cwd ─────────────────────────────────────────
-  k-nw  C-S-ret         ;; new_window_with_cwd
-  k-nt  C-S-n           ;; new_tab_with_cwd
-
-  ;; ── close tab ─────────────────────────────────────────────────────────
-  k-ct  C-S-w           ;; close_tab
-
-  ;; ── float / pin ───────────────────────────────────────────────────────
-  k-fl  C-S-A-f         ;; toggle_window_float
-  k-pn  C-S-A-p         ;; toggle_window_pin
-
-  ;; ── kitty config reload ───────────────────────────────────────────────
-  k-rc  C-A-r           ;; load_config_file
-
-  ;; ── font size ─────────────────────────────────────────────────────────
-  k-f+  C-=             ;; font size bigger
-  k-f-  C--             ;; font size smaller
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 15. KITTY-TAB ALIASES  –  goto specific tab (alt+1..9, alt+0=tab10)
-;; ─────────────────────────────────────────────────────────────────────────────
-
-(defalias
-  kt1  A-Digit1    kt2  A-Digit2    kt3  A-Digit3    kt4  A-Digit4
-  kt5  A-Digit5    kt6  A-Digit6    kt7  A-Digit7    kt8  A-Digit8
-  kt9  A-Digit9    kt0  A-Digit0
-  ;; tab cycle (on - and = in the tab layer)
-  ktp  C-S-tab     ktn  C-tab       ;; previous / next tab
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 16. FN-LAYER ALIASES  –  one-shot modifiers & dynamic macro
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     One-shot (sticky) modifiers: tap fn + tap the mod key → that modifier
-;;     applies to the NEXT key only, then auto-releases.
-;;     Great for typing a single capital letter or a single Ctrl+ combo
-;;     without holding anything.
-
-(defalias
-  os-s  (one-shot $os lsft)    ;; sticky Shift  (on a)
-  os-c  (one-shot $os lctl)    ;; sticky Ctrl   (on s)
-  os-a  (one-shot $os lalt)    ;; sticky Alt    (on d)
-  os-m  (one-shot $os lmet)    ;; sticky Meta   (on f)
-  ;; dynamic macro
-  dyn-rec  (dynamic-macro-record)   ;; start / stop recording
-  dyn-play (dynamic-macro-play)     ;; replay recorded sequence
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 17. LEADER-KEY SEQUENCES (git + kitty shell macros)
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     Right Meta = leader key.  After pressing it, type the sequence keys.
-;;     They are NOT sent to the terminal – kanata holds them until they match
-;;     a defined sequence or the 450 ms timeout expires.
-;;
-;;     Sequences:
-;;       g s t     → git status\n
-;;       g a d     → git add -\s       (trailing space, awaiting path)
-;;       g c m     → git commit -m "\s (awaiting message)
-;;       g p s     → git push\n
-;;       g l       → git log --oneline -20\n
-;;       k r       → kitty config reload shortcut (ctrl+alt+r)
-;;       r l       → live-reload kanata
-
-(deffakekeys
-  fk-gst   (macro g i t spc s t a t u s ret)
-  fk-gad   (macro g i t spc a d d spc -)
-  fk-gcm   (macro g i t spc c o m m i t spc - m spc)
-  fk-gps   (macro g i t spc p u s h ret)
-  fk-glo   (macro g i t spc l o g spc - - o n e l i n e spc - 20 ret)
-  fk-krc   C-A-r
-  fk-lrld  lrld
-)
-
-(defseq
-  git-st    (g s t)
-  git-ad    (g a d)
-  git-cm    (g c m)
-  git-ps    (g p s)
-  git-lg    (g l)
-  kitty-rl  (k r)
-  kanata-rl (r l)
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; 18. INPUT CHORDS v2
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     Two-key combos that fire on first-release.  Detection window: 180 ms.
-;;     (non-chord-layer) = if the combo doesn't match, keys act normally.
-;;
-;;     Kitty split chords (very natural: adjacent keys on home row):
-;;       j + k   →  hsplit  (ctrl+alt+-)
-;;       k + l   →  vsplit  (ctrl+alt+\)
-;;     Editing chords (bottom row, rarely pressed together):
-;;       c + v   →  undo    (Ctrl+Z)
-;;       v + b   →  save    (Ctrl+S)
-;;       n + m   →  kitty close-tab (Ctrl+Shift+W)
-
-(defchordsv2
-  ;; kitty splits – adjacent home-row keys
-  (j k)    C-A--        180  first-release  (non-chord-layer)
-  (k l)    C-A-\        180  first-release  (non-chord-layer)
-  ;; editing
-  (c v)    C-z          180  first-release  (non-chord-layer)
-  (v b)    C-s          180  first-release  (non-chord-layer)
-  ;; kitty close tab
-  (n m)    C-S-w        180  first-release  (non-chord-layer)
-)
-
-;; ═══════════════════════════════════════════════════════════════════════════════
-;; 19. LAYERS
-;; ═══════════════════════════════════════════════════════════════════════════════
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; LAYER: base
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     The main layer.  Key by key explanation:
-;;
-;;     F-row:   Esc stays Esc.  F1-F10 are tap-hold with your original
-;;              system shortcuts on hold.  F11/F12 pass through.
-;;     Num row: tap = digit, hold = shifted symbol (your original number row).
-;;     QWERTY:  q/w/r/t hold Ctrl+letter.  e is plain.  y/u/i/o hold
-;;              Home/PgDn/PgUp/End.  p is plain.  [ ] \ are tap-hold
-;;              (bracket/brace, backslash/pipe).
-;;     Home:    CapsLock = tap-dance (fn/kitty/kittytab layers).
-;;              a = Ctrl+A on hold.  s/d/f = Meta/Alt/Ctrl on hold.
-;;              g is plain (it sits between the two mod groups).
-;;              h = backtick on hold.  j/k/l = RCtl/RAlt/RMet on hold.
-;;              ; / ' = colon / dquote on hold.  Ret = tap-hold Ret/RAlt.
-;;     Bottom:  z/x/c/v = Ctrl+Z/X/C/V on hold.  b is plain.
-;;              n m are plain.  , . / = <  >  ? on hold.
-;;     Thumb:   LCtl = LCtl.  LMet = win layer (held).  LAlt = LAlt.
-;;              Space = edit layer (held).  RAlt = RAlt.
-;;              RMet = leader key.  RCtl = RCtl.
-
-(deflayer base
-  ;; ── F-row ───────────────────────────────────────────────────────────────
-  esc  @qtd @pum @dsb @isb @mut @vdn @vup @mic @psc @lts f11  f12
-  ;; ── number row ──────────────────────────────────────────────────────────
-  @gm  @1m  @2m  @3m  @4m  @5m  @6m  @7m  @8m  @9m  @0m  @mi  @pl  @la
-  ;; ── QWERTY row ──────────────────────────────────────────────────────────
+;; LAYER ONE - main mods
+(deflayer one
+  caps @qtd @pum @dsb @isb @mut @vdn @vup @mic @psc @lts f11  f12
+  @gm  @1m  @2m  @3m  @4m  @5m  @6m  @7m  @8m  @9m  @0m  @mi  @pl  bspc
   tab  @qq  @ww  e    @rr  @tt  @yy  @uu  @ii  @oo  p    @so  @sc  @pi
-  ;; ── home row ────────────────────────────────────────────────────────────
-  @caps-td @aa @ss @dd @ff g    @hh  @jj  @kk  @ll  @se  @ap  @ra
-  ;; ── bottom alpha ────────────────────────────────────────────────────────
+  esc  @aa  @ss  @dd  @ff  g    @hh  @jj  @kk  @ll  @se  @ap  ret
   lsft @zz  @xx  @cc  @vv  b    n    m    @co  @fu  @fs  rsft
-  ;; ── modifier / space ────────────────────────────────────────────────────
-  lctl @win lalt           @edit          ralt @ldr rctl
+  lctl @l2  @la           @l3             @ra  _    _
 )
 
-;; ─────────────────────────────────────────────────────────────────────────────
-;; LAYER: edit  –  vi-style text editing (hold Space)
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     Preserved layout from your "three" layer.  Right-hand hjkl = arrows.
-;;     [ ] = delete-to-line-start / delete-to-line-end.
-;;     Bottom row: word delete variants.
-;;     Mouse wheel on y u i o.
-;;     Left hand is mostly transparent so you can still type / use shortcuts.
-
-(deflayer edit
-  ;; ── F-row ───────────────────────────────────────────────────────────────
-  _    _    _    _    _    _    _    _    _    _    _    _    _
-  ;; ── number row ──────────────────────────────────────────────────────────
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  ;; ── QWERTY row: mouse wheel on y u i o; line-delete on [ ] ───────────
-  _    _    _    _    _    _    @mwl @mwd @mwu @mwr _    @dtb @dte _
-  ;; ── home row  →  arrows on h j k l;  bspc/del on ; '  ────────────────
-  _    _    _    _    _    _    lft  down up   rght bspc del  ret
-  ;; ── bottom alpha  →  word delete on n m , .  ─────────────────────────
-  _    _    _    _    _    _    @dwb @dwf @tbd @tfd _    _
-  ;; ── modifier / space ────────────────────────────────────────────────────
-  _    _    _             _              _    _    _
+;; Workspaces, Windows, Panes layer - left hand on left Windows key  
+(deflayer two 
+  caps _    _    _    _    _    _    _    _    _    _    _    lrld
+  grv  _    _    _    _    _    6    7    8    9    0    _    _    bspc
+  tab  _    _    _    _    _    @wtl @dsl @dsr @wtr @pp  @pt  @nt  \
+  esc  _    _    _    _    _    @rpl @rpd @rpu @rpr @mls @mrs ret
+  lsft _    _    _    _    _    @w1  @w2  @w3  @w4  _    rsft
+  _    _    _           _                 _    _    _
 )
 
-;; ─────────────────────────────────────────────────────────────────────────────
-;; LAYER: win  –  GNOME workspaces & window management (hold LMet)
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     Preserved from your "two" layer.  Same physical key positions.
-;;     Right-hand home row = window snap (Meta+arrows).
-;;     Bottom right = workspaces 1-4.
-;;     [ ] = tab reorder (Shift+Ctrl+PgUp/PgDn).
-;;     p = desktop switch.  ; ' = monitor move (Shift+Meta+h/l).
-;;     y u = desktop slide left/right.
-;;     lrld on F12 preserved.
 
-(deflayer win
-  ;; ── F-row ───────────────────────────────────────────────────────────────
-  _    _    _    _    _    _    _    _    _    _    _    _    lrld
-  ;; ── number row ──────────────────────────────────────────────────────────
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  ;; ── QWERTY row ──────────────────────────────────────────────────────────
-  _    _    _    _    _    _    @dsl @dsr _    _    @pp  @wtl @wtr _
-  ;; ── home row ────────────────────────────────────────────────────────────
-  _    _    _    _    _    _    @rpl @rpd @rpu @rpr @mls @mrs ret
-  ;; ── bottom alpha ────────────────────────────────────────────────────────
-  _    _    _    _    _    _    @w1  @w2  @w3  @w4  _    _
-  ;; ── modifier / space ────────────────────────────────────────────────────
-  _    _    _             _              _    _    _
+;; Editing - text and terminal editing layer - spacebar held               
+(deflayer three                                                           
+  caps @qtd @pum @dsb @isb @mut @vdn @vup @mic @psc @lts _    _      
+  grv  _    _    _    _    _    _    _    _    _    _    _    _    bspc 
+  tab  _    _    _    _    _    @mwl @mwd @mwu @mwr p    @dtb @dte _    
+  esc  _    _    _    _    _    left down up   rght bspc del  ret       
+  lsft _    _    _    _    _    @dwb @dwf @tbd @tfd _    rsft           
+  _    _    _           _                 _    _    _                   
 )
 
-;; ─────────────────────────────────────────────────────────────────────────────
-;; LAYER: kitty  –  ALL kitty terminal controls (Caps ×2 held)
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     This is the brand-new layer that integrates every active kitty.conf
-;;     keybinding into one ergonomic layer.
-;;
-;;     Layout zones (right hand does the heavy lifting):
-;;
-;;     Home row (h j k l):
-;;       – pane NAVIGATE left / down / up / right  (alt+hjkl)
-;;     QWERTY row (y u i o):
-;;       – pane RESIZE wider / shorter / taller / narrower  (alt+shift+hjkl)
-;;     Bottom row (n m , .):
-;;       – pane MOVE left / down / up / right  (ctrl+shift+alt+hjkl)
-;;
-;;     The three rows of hjkl-based actions stack vertically so your fingers
-;;     learn ONE direction scheme and shift which row they're on:
-;;       QWERTY row  →  resize
-;;       Home row    →  navigate
-;;       Bottom row  →  move
-;;
-;;     Left-hand controls (QWERTY q w e r t):
-;;       q = hsplit   w = vsplit
-;;       e = scrollback nvim (full)    r = scrollback nvim (last cmd)
-;;       t = broadcast
-;;     Left-hand home (a s d f):
-;;       a = kitty config reload   s = layout rotate
-;;       d = font bigger           f = font smaller
-;;     Right-hand extras:
-;;       p = URL hints
-;;       [ = new window cwd    ] = new tab cwd    \ = close tab
-;;       ; = float toggle      ' = pin toggle
+;; lrld is a default shortcut to reload the configuration found on layer 2 in place of f12 
 
-(deflayer kitty
-  ;; ── F-row ───────────────────────────────────────────────────────────────
-  _    _    _    _    _    _    _    _    _    _    _    _    _
-  ;; ── number row ──────────────────────────────────────────────────────────
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  ;; ── QWERTY row: splits q w; scrollback e r; broadcast t; resize y u i o;
-  ;;                URL p; window ops [ ] \ ──────────────────────────────────
-  _    @k-hs @k-vs @k-sb @k-sl @k-bc @kr-w @kr-s @kr-t @kr-n @k-url @k-nw @k-nt @k-ct
-  ;; ── home row: kitty-reload a; layout-rotate s; font d f;
-  ;;              pane nav h j k l; float ;; pin ' ────────────────────────
-  _    @k-rc @k-lr @k-f+ @k-f- _    @kn-l @kn-d @kn-u @kn-r @k-fl @k-pn _
-  ;; ── bottom row: pane move n m , . ─────────────────────────────────────
-  _    _    _    _    _    _    @km-l @km-d @km-u @km-r _    _
-  ;; ── modifier / space ────────────────────────────────────────────────────
-  _    _    _             spc            _    _    _
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; LAYER: kittytab  –  kitty tab goto by number (Caps ×3 held)
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     Simple and focused: the number row maps directly to alt+1..9 / alt+0.
-;;     Tab prev/next on - and =.  Everything else transparent.
-
-(deflayer kittytab
-  ;; ── F-row ───────────────────────────────────────────────────────────────
-  _    _    _    _    _    _    _    _    _    _    _    _    _
-  ;; ── number row  →  tab 1-9, tab 10, plus prev/next ───────────────────
-  _    @kt1 @kt2 @kt3 @kt4 @kt5 @kt6 @kt7 @kt8 @kt9 @kt0 @ktp @ktn _
-  ;; ── everything else transparent ─────────────────────────────────────────
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _             spc            _    _    _
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; LAYER: fn  –  one-shot mods, dynamic macro, live-reload (Caps ×1 held)
-;; ─────────────────────────────────────────────────────────────────────────────
-;;     One-shot modifiers on the left home row (a s d f):
-;;       a = sticky Shift    (type one capital)
-;;       s = sticky Ctrl     (type one Ctrl+key)
-;;       d = sticky Alt      (type one Alt+key)
-;;       f = sticky Meta     (type one Super+key)
-;;     Dynamic macro:
-;;       ; = record toggle
-;;       ' = play
-;;     Live reload:
-;;       F12 (top-right) = lrld
-
-(deflayer fn
-  ;; ── F-row ───────────────────────────────────────────────────────────────
-  _    _    _    _    _    _    _    _    _    _    _    _    lrld
-  ;; ── number row ──────────────────────────────────────────────────────────
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  ;; ── QWERTY row ──────────────────────────────────────────────────────────
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  ;; ── home row: one-shots on a s d f; dyn-macro on ; ' ─────────────────
-  _    @os-s @os-c @os-a @os-m _   _    _    _    _    @dyn-rec @dyn-play _
-  ;; ── bottom row ──────────────────────────────────────────────────────────
-  _    _    _    _    _    _    _    _    _    _    _    _
-  ;; ── modifier / space ────────────────────────────────────────────────────
-  _    _    _             spc            _    _    _
-)
-
-;; ─────────────────────────────────────────────────────────────────────────────
-;; END
-;; ─────────────────────────────────────────────────────────────────────────────
