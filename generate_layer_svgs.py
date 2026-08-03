@@ -21,15 +21,14 @@ COLORS = {
     "layer_label": "#f0883e",
 }
 
-KEY_W = 56
-KEY_H = 56
-KEY_GAP = 6
-ROW_GAP = 10
-MARGIN = 30
+KEY_W = 52
+KEY_H = 52
+KEY_GAP = 5
+ROW_GAP = 8
+MARGIN = 20
 
 # Standard 60% row lengths
 ROW_LENGTHS = [13, 14, 14, 13, 12, 7]
-ROW_OFFSETS = [0, 0, 0, 0, 0, 0]
 
 # Key width multipliers
 SPECIAL_KEYS = {
@@ -49,6 +48,24 @@ SPECIAL_KEYS = {
     "rctl": 1.25,
 }
 
+# Calculate SVG dimensions
+def calc_keyboard_width():
+    """Calculate total keyboard width from row 2 (widest row with 14 keys)."""
+    total = MARGIN
+    for i in range(14):
+        # Approximate key names for width calc - use max possible
+        w_mult = 1.0
+        if i == 0:
+            w_mult = SPECIAL_KEYS.get("tab", 1.0)
+        elif i == 13:
+            w_mult = SPECIAL_KEYS.get("\\", 1.0)
+        w = KEY_W * w_mult + (w_mult - 1) * KEY_GAP
+        total += w + KEY_GAP
+    return total + MARGIN
+
+SVG_WIDTH = int(calc_keyboard_width()) + 20  # extra padding
+SVG_HEIGHT = 65 + 6 * (KEY_H + ROW_GAP) + MARGIN + 10  # title + 6 rows + padding
+
 
 def escape_xml(text):
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
@@ -58,26 +75,26 @@ def draw_key(x, y, w_mult, tap, hold=None, action=None, active=False):
     w = KEY_W * w_mult + (w_mult - 1) * KEY_GAP
     border = COLORS["key_border_active"] if active else COLORS["key_border"]
 
-    svg = f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{KEY_H}" rx="6" '
-    svg += f'fill="{COLORS["key_bg"]}" stroke="{border}" stroke-width="2"/>\n'
+    svg = f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{KEY_H}" rx="5" '
+    svg += f'fill="{COLORS["key_bg"]}" stroke="{border}" stroke-width="1.5"/>\n'
 
     # Tap label (top)
     if tap:
-        svg += f'<text x="{x + w/2:.1f}" y="{y + 18:.1f}" text-anchor="middle" '
-        svg += f'fill="{COLORS["text_tap"]}" font-family="Segoe UI,system-ui,sans-serif" '
-        svg += f'font-size="13" font-weight="600">{escape_xml(tap)}</text>\n'
+        svg += f'<text x="{x + w/2:.1f}" y="{y + 16:.1f}" text-anchor="middle" '
+        svg += f'fill="{COLORS["text_tap"]}" font-family="Segoe UI,system-ui,-apple-system,sans-serif" '
+        svg += f'font-size="12" font-weight="600">{escape_xml(tap)}</text>\n'
 
-    # Hold label (middle/bottom)
+    # Hold label (middle)
     if hold:
-        svg += f'<text x="{x + w/2:.1f}" y="{y + 36:.1f}" text-anchor="middle" '
-        svg += f'fill="{COLORS["text_hold"]}" font-family="Segoe UI,system-ui,sans-serif" '
-        svg += f'font-size="11" font-weight="500">{escape_xml(hold)}</text>\n'
+        svg += f'<text x="{x + w/2:.1f}" y="{y + 30:.1f}" text-anchor="middle" '
+        svg += f'fill="{COLORS["text_hold"]}" font-family="Segoe UI,system-ui,-apple-system,sans-serif" '
+        svg += f'font-size="10" font-weight="500">{escape_xml(hold)}</text>\n'
 
     # Action description (bottom, smaller)
     if action:
-        svg += f'<text x="{x + w/2:.1f}" y="{y + 48:.1f}" text-anchor="middle" '
-        svg += f'fill="{COLORS["text_action"]}" font-family="Segoe UI,system-ui,sans-serif" '
-        svg += f'font-size="9">{escape_xml(action)}</text>\n'
+        svg += f'<text x="{x + w/2:.1f}" y="{y + 42:.1f}" text-anchor="middle" '
+        svg += f'fill="{COLORS["text_action"]}" font-family="Segoe UI,system-ui,-apple-system,sans-serif" '
+        svg += f'font-size="8">{escape_xml(action)}</text>\n'
 
     return svg, w + KEY_GAP
 
@@ -86,18 +103,39 @@ def draw_keyboard(keys_data, layer_title, subtitle, active_keys=None):
     if active_keys is None:
         active_keys = set()
 
+    # Recalculate actual width for this specific key layout
+    y = 55
+    max_x = 0
+    key_idx = 0
+    for row_idx, row_len in enumerate(ROW_LENGTHS):
+        x = MARGIN
+        for _ in range(row_len):
+            if key_idx >= len(keys_data):
+                break
+            key_info = keys_data[key_idx]
+            key_name = key_info.get("key", "")
+            w_mult = SPECIAL_KEYS.get(key_name, 1.0)
+            w = KEY_W * w_mult + (w_mult - 1) * KEY_GAP
+            x += w + KEY_GAP
+            max_x = max(max_x, x)
+            key_idx += 1
+        y += KEY_H + ROW_GAP
+
+    actual_width = max(max_x + MARGIN, SVG_WIDTH)
+    actual_height = y + MARGIN
+
     svg_parts = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" width="900" height="360">',
-        f'<rect width="100%" height="100%" fill="{COLORS["bg"]}" rx="12"/>',
-        f'<text x="450" y="28" text-anchor="middle" fill="{COLORS["layer_label"]}" '
-        f'font-family="Segoe UI,system-ui,sans-serif" font-size="18" font-weight="700">'
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {actual_width:.0f} {actual_height:.0f}" width="{actual_width:.0f}" height="{actual_height:.0f}">',
+        f'<rect width="100%" height="100%" fill="{COLORS["bg"]}" rx="8"/>',
+        f'<text x="{actual_width/2:.0f}" y="24" text-anchor="middle" fill="{COLORS["layer_label"]}" '
+        f'font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="16" font-weight="700">'
         f'{escape_xml(layer_title)}</text>',
-        f'<text x="450" y="48" text-anchor="middle" fill="{COLORS["text_secondary"]}" '
-        f'font-family="Segoe UI,system-ui,sans-serif" font-size="12">'
+        f'<text x="{actual_width/2:.0f}" y="42" text-anchor="middle" fill="{COLORS["text_secondary"]}" '
+        f'font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="11">'
         f'{escape_xml(subtitle)}</text>',
     ]
 
-    y = 65
+    y = 55
     key_idx = 0
     for row_idx, row_len in enumerate(ROW_LENGTHS):
         x = MARGIN

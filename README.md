@@ -220,15 +220,15 @@ Use `kanata_gnome.kbd` as the active configuration. It is tuned for GNOME deskto
 
 ### Layer 1 — Base
 
-Default typing layer. Nearly every key has a tap-hold dual role.
-
 ![Layer 1 — Base](assets/layer1_base.png)
+
+Default typing layer. Nearly every key has a tap-hold dual role. Tap for the letter, hold for the modifier or action shown in blue.
 
 ### Layer 2 — Window/Workspace
 
-Hold **Left Meta** (`S` key or physical Windows key) to activate.
-
 ![Layer 2 — Window/Workspace](assets/layer2_window.png)
+
+Hold **Left Meta** (`S` key or physical Windows key) to activate.
 
 | Key | Action |
 |-----|--------|
@@ -242,9 +242,9 @@ Hold **Left Meta** (`S` key or physical Windows key) to activate.
 
 ### Layer 3 — Symbols
 
-Hold **Spacebar** to activate. Outputs programming symbols directly.
-
 ![Layer 3 — Symbols](assets/layer3_symbols.png)
+
+Hold **Spacebar** to activate. Outputs programming symbols directly. This layer removes the need to chord Shift for common programming characters.
 
 | Row | Mapping |
 |-----|---------|
@@ -255,13 +255,11 @@ Hold **Spacebar** to activate. Outputs programming symbols directly.
 | `G`–`L` | `~` `\|` `:` `"` |
 | `Z`–`/` | `-` `_` `=` `=` `\` `\|` `<` `>` `,` `.` `?` |
 
-This layer removes the need to chord Shift for common programming characters.
-
 ### Layer 4 — Editing
 
-Hold **Left Ctrl** to activate.
-
 ![Layer 4 — Editing](assets/layer4_editing.png)
+
+Hold **Left Ctrl** to activate.
 
 | Key | Action |
 |-----|--------|
@@ -274,9 +272,9 @@ Hold **Left Ctrl** to activate.
 
 ### Layer 5 — Numbers
 
-Hold **Right Ctrl** to activate. Places a numpad under the left hand.
-
 ![Layer 5 — Numbers](assets/layer5_numbers.png)
+
+Hold **Right Ctrl** to activate. Places a numpad under the left hand. Ideal for quick numeric entry without moving the right hand from the mouse.
 
 | Key | Output |
 |-----|--------|
@@ -285,8 +283,6 @@ Hold **Right Ctrl** to activate. Places a numpad under the left hand.
 | `A` / `S` / `D` / `F` | `/` `6` `5` `4` |
 | `Z` / `X` / `C` / `V` | `=` `3` `2` `1` |
 | `G` | `0` |
-
-Ideal for quick numeric entry without moving the right hand from the mouse.
 
 ---
 
