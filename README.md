@@ -241,8 +241,8 @@ Hold **Left Meta** (`S` key or physical Windows key) to activate.
 | `Y` / `U` / `I` / `O` | Move window to previous display / workspace left / workspace right / move window to next display |
 | `H` / `J` / `K` / `L` | Workspace previous / down / up / next |
 | `N` / `M` / `,` / `.` | Switch to workspace 1 / 2 / 3 / 4 |
-| `P` | Close kitty tab (`C-M-/`) |
-| `[` / `]` | Previous / next kitty tab (`C-M-,` / `C-M-.`) |
+| `P` | Play/pause media |
+| `[` / `]` | Previous track / next track |
 | `;` / `'` | kitty scroll left / right (`S-M-h` / `S-M-l`) |
 | `F12` | Reload Kanata config (`lrld`) |
 

@@ -221,8 +221,8 @@ layer2_keys = [
     {"key": "e", "tap": ""}, {"key": "r", "tap": ""}, {"key": "t", "tap": ""},
     {"key": "y", "tap": "Disp-", "action": "Move prev"}, {"key": "u", "tap": "WS ←", "action": "Workspace"},
     {"key": "i", "tap": "WS →", "action": "Workspace"}, {"key": "o", "tap": "Disp+", "action": "Move next"},
-    {"key": "p", "tap": "Close", "action": "kitty tab"}, {"key": "[", "tap": "Prev T", "action": "kitty tab"},
-    {"key": "]", "tap": "Next T", "action": "kitty tab"}, {"key": "\\", "tap": ""},
+    {"key": "p", "tap": "Play", "action": "Media"}, {"key": "[", "tap": "Prev", "action": "Track"},
+    {"key": "]", "tap": "Next", "action": "Track"}, {"key": "\\", "tap": ""},
 
     {"key": "caps", "tap": "Esc"}, {"key": "a", "tap": ""}, {"key": "s", "tap": ""},
     {"key": "d", "tap": ""}, {"key": "f", "tap": ""}, {"key": "g", "tap": ""},

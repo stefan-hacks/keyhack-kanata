@@ -126,11 +126,11 @@
   oo (tap-hold $tap-time $hold-time o end)
 
   ;; kitty terminal tab controls (tap and hold both trigger same action)
-  ;; P key: tap/hold=close kitty tab (Ctrl+Shift+Forward Slash)
+  ;; P key: tap/hold=play/pause media
   pp (tap-hold $tap-time $hold-time C-M-/ C-M-/)
-  ;; [ key: tap/hold=previous kitty tab (Ctrl+Shift+Comma)
+  ;; [ key: tap/hold=previous track
   pt (tap-hold $tap-time $hold-time C-M-, C-M-,)
-  ;; ] key: tap/hold=next kitty tab (Ctrl+Shift+Period)
+  ;; ] key: tap/hold=next track
   nt (tap-hold $tap-time $hold-time C-M-. C-M-.)
   ;; ; key: tap/hold=scroll kitty left (Shift+Meta+H)
   mls (tap-hold $tap-time $hold-time S-M-h S-M-h)

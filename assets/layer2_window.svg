@@ -89,16 +89,16 @@
 <text x="587.5" y="217.0" text-anchor="middle" fill="#7ee787" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="8">Move next</text>
 
 <rect x="618.5" y="175.0" width="52.0" height="52" rx="5" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
-<text x="644.5" y="191.0" text-anchor="middle" fill="#c9d1d9" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="12" font-weight="600">Close</text>
-<text x="644.5" y="217.0" text-anchor="middle" fill="#7ee787" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="8">kitty tab</text>
+<text x="644.5" y="191.0" text-anchor="middle" fill="#c9d1d9" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="12" font-weight="600">Play</text>
+<text x="644.5" y="217.0" text-anchor="middle" fill="#7ee787" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="8">Media</text>
 
 <rect x="675.5" y="175.0" width="52.0" height="52" rx="5" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
-<text x="701.5" y="191.0" text-anchor="middle" fill="#c9d1d9" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="12" font-weight="600">Prev T</text>
-<text x="701.5" y="217.0" text-anchor="middle" fill="#7ee787" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="8">kitty tab</text>
+<text x="701.5" y="191.0" text-anchor="middle" fill="#c9d1d9" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="12" font-weight="600">Prev</text>
+<text x="701.5" y="217.0" text-anchor="middle" fill="#7ee787" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="8">Track</text>
 
 <rect x="732.5" y="175.0" width="52.0" height="52" rx="5" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
-<text x="758.5" y="191.0" text-anchor="middle" fill="#c9d1d9" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="12" font-weight="600">Next T</text>
-<text x="758.5" y="217.0" text-anchor="middle" fill="#7ee787" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="8">kitty tab</text>
+<text x="758.5" y="191.0" text-anchor="middle" fill="#c9d1d9" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="12" font-weight="600">Next</text>
+<text x="758.5" y="217.0" text-anchor="middle" fill="#7ee787" font-family="Segoe UI,system-ui,-apple-system,sans-serif" font-size="8">Track</text>
 
 <rect x="789.5" y="175.0" width="80.5" height="52" rx="5" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
 
