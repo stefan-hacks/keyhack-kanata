@@ -54,15 +54,15 @@
   ra (tap-hold $tap-time $hold-time ret ralt)
 
   ;; F-row system controls (hold activates media/window actions)
-  ;; F1: tap=F1, hold=mute audio
+  ;; F1: tap=F1, hold=quake terminal dropdown
   qtd (tap-hold $tap-time $hold-time f1 C-A-q)
-  ;; F2: tap=F2, hold=play/pause media
+  ;; F2: tap=F2, hold=run command
   pum (tap-hold $tap-time $hold-time f2 A-f2)
   ;; F3: tap=F3, hold=decrease display brightness
   dsb (tap-hold $tap-time $hold-time f3 C-M-down)
   ;; F4: tap=F4, hold=increase display brightness
   isb (tap-hold $tap-time $hold-time f4 C-M-up)
-  ;; F5: tap=F5, hold=mute microphone
+  ;; F5: tap=F5, hold=toggle mute speakers/audio output
   mut (tap-hold $tap-time $hold-time f5 A-f5)
   ;; F6: tap=F6, hold=volume down
   vdn (tap-hold $tap-time $hold-time f6 A-f6)
@@ -191,12 +191,6 @@
   ;; . key: tap=C-del (delete word forward)
   dwf (tap-hold $tap-time $hold-time . C-del)
 
-  ;; Display brightness controls
-  ;; [ key: tap/hold=decrease display brightness (Alt+F11)
-  dsl (tap-hold $tap-time $hold-time A-f11 A-f11)
-  ;; ] key: tap/hold=increase display brightness (Alt+F12)
-  dsr (tap-hold $tap-time $hold-time A-f12 A-f12)
-
   ;; Window snapping (GNOME)
   ;; Y key: tap/hold=move window to previous display (Shift+Meta+PageUp)
   wtl (tap-hold $tap-time $hold-time S-M-pgup S-M-pgup)
@@ -212,6 +206,10 @@
   rpu (tap-hold $tap-time $hold-time M-up M-up)
   ;; L key: tap/hold=next workspace (Meta+Right)
   rpr (tap-hold $tap-time $hold-time M-rght M-rght)
+  ;; [ key: tap/hold=switch to workspace on the left (Alt+F11)
+  dsl (tap-hold $tap-time $hold-time A-f11 A-f11)
+  ;; ] key: tap/hold=switch to workspace on the right (Alt+F12)
+  dsr (tap-hold $tap-time $hold-time A-f12 A-f12)
 
   ;; kitty tab controls (duplicates for Layer 2)
   ;; P key: close kitty tab
@@ -257,7 +255,7 @@
 (deflayer three
   caps @qtd @pum @dsb @isb @mut @vdn @vup @mic @psc @lts _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    bspc
-  tab  S-1  S-2  S-3  S-4  S-5  _    S-9  S-0  S-[  S-]  [    ]    _
+  tab  S-1  S-2  S-3  S-4  S-5  0    S-9  S-0  S-[  S-]  [    ]    _
   esc  S-6  S-7  S-8  /    grv  S-grv S-\ S-;  S-'  _    _    ret
   lsft -    S-=  S--  =    \    S-,  S-.  ,    .    S-/  rsft
   _    _    _           _                 _    _    _
