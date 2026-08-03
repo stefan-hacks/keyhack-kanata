@@ -58,8 +58,8 @@ The configuration is organized into five layers. Four are accessed via tap-hold 
 │   Layer 1 (Base)      →  Default; tap-hold everywhere            │
 │   Layer 2 (Window)    →  Hold Left Meta / Super key             │
 │   Layer 3 (Symbols)   →  Hold Spacebar                          │
-│   Layer 4 (Editing)   →  Hold Left Ctrl                         │
-│   Layer 5 (Numbers)   →  Hold Right Ctrl                        │
+│   Layer 4 (Editing)   →  Hold Left Shift                        │
+│   Layer 5 (Numbers)   →  Hold Right Shift                       │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
