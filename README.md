@@ -222,40 +222,13 @@ Use `kanata_gnome.kbd` as the active configuration. It is tuned for GNOME deskto
 
 Default typing layer. Nearly every key has a tap-hold dual role.
 
-```
-┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│Esc │Mute│P/P │Br- │Br+ │MicM│Vol-│Vol+│MicT│Sshot│Lck│F11 │F12 │
-└────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
-
-┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│ ~  │ !  │ @  │ #  │ $  │ %  │ ^  │ &  │ *  │ (  │ )  │ _  │ +  │Bspc│
-│hold│hold│hold│hold│hold│hold│hold│hold│hold│hold│hold│hold│hold│    │
-└────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
-
-┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│Tab │C-q │C-w │ e  │C-r │C-t │Home│PgDn│PgUp│End │ p  │ {  │ }  │ |  │
-│    │hold│hold│    │hold│hold│hold│hold│hold│hold│    │hold│hold│hold│
-└────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
-
-┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│Esc │C-a │S=LM│D=LA│F=LC│ g  │H=SA│J=RC│K=RA│L=RM│ :  │ "  │Ret │
-│    │hold│hold│hold│hold│    │hold│hold│hold│hold│hold│hold│    │
-└────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
-
-┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│Sft │C-z │C-x │C-c │C-v │ b  │ n  │ m  │ <  │ >  │ ?  │Sft │
-│    │hold│hold│hold│hold│    │    │    │hold│hold│hold│    │
-└────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
-
-┌────┬────┬────┬─────────────────┬────┬────┐
-│L4  │L2  │Bspc│      L3         │Ret │L5  │
-│LCtl│LMet│=Del│     (Space)     │=RAlt│RCtl│
-└────┴────┴────┴─────────────────┴────┴────┘
-```
+![Layer 1 — Base](assets/layer1_base.png)
 
 ### Layer 2 — Window/Workspace
 
 Hold **Left Meta** (`S` key or physical Windows key) to activate.
+
+![Layer 2 — Window/Workspace](assets/layer2_window.png)
 
 | Key | Action |
 |-----|--------|
@@ -270,6 +243,8 @@ Hold **Left Meta** (`S` key or physical Windows key) to activate.
 ### Layer 3 — Symbols
 
 Hold **Spacebar** to activate. Outputs programming symbols directly.
+
+![Layer 3 — Symbols](assets/layer3_symbols.png)
 
 | Row | Mapping |
 |-----|---------|
@@ -286,6 +261,8 @@ This layer removes the need to chord Shift for common programming characters.
 
 Hold **Left Ctrl** to activate.
 
+![Layer 4 — Editing](assets/layer4_editing.png)
+
 | Key | Action |
 |-----|--------|
 | `H` / `J` / `K` / `L` | Mouse wheel left / down / up / right |
@@ -298,6 +275,8 @@ Hold **Left Ctrl** to activate.
 ### Layer 5 — Numbers
 
 Hold **Right Ctrl** to activate. Places a numpad under the left hand.
+
+![Layer 5 — Numbers](assets/layer5_numbers.png)
 
 | Key | Output |
 |-----|--------|
