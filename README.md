@@ -2,89 +2,92 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Linux-blue.svg)
-![Desktop](https://img.shields.io/badge/desktop-GNOME-orange.svg)
 
-> A battle-tested Kanata keyboard configuration for **HP EliteBook 840 G8** running **Debian Linux** with **GNOME desktop** and **kitty terminal**.
-
-This configuration transforms a standard laptop keyboard into a productivity powerhouse using [Kanata](https://github.com/jtroo/kanata) — a cross-platform keyboard remapping tool that brings QMK-like functionality to any keyboard.
+> A production-grade [Kanata](https://github.com/jtroo/kanata) configuration that turns a standard keyboard into a 5-layer productivity engine. Built for GNOME on Linux with kitty terminal integration.
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Installation](#-installation)
-- [Configuration Breakdown](#-configuration-breakdown)
-- [Layer Reference](#-layer-reference)
-- [Hardware Context](#-hardware-context)
-- [Customization](#-customization)
-- [Troubleshooting](#-troubleshooting)
-- [Resources](#-resources)
+- [Overview](#overview)
+- [The 5 Layers](#the-5-layers)
+- [Key Concepts](#key-concepts)
+- [Installation](#installation)
+- [Configuration Files](#configuration-files)
+- [Layer Reference](#layer-reference)
+- [Customization](#customization)
+- [Troubleshooting](#troubleshooting)
+- [Resources](#resources)
 
 ---
 
-## 🎯 Overview
+## Overview
 
-This configuration is optimized for:
+This configuration uses **tap-hold** mechanics to compress modifier keys, symbol layers, navigation, and window management into the same physical keymap. No keymap switching software. No external tools. Just Kanata running as a user-level systemd service.
 
-| Component | Details |
-|-----------|---------|
-| **Hardware** | HP EliteBook 840 G8 (business laptop) |
-| **OS** | Debian Linux (stable/testing) |
-| **Desktop** | GNOME Shell |
-| **Terminal** | kitty |
-| **Keyboard** | Built-in laptop keyboard with F1-F12 media row |
+The design philosophy is **layers over reach** — instead of stretching for modifier chords or function keys, every key on the home row and number row carries a secondary action when held.
 
-### Philosophy
+| Component | Requirement |
+|-----------|-------------|
+| **OS** | Linux |
+| **Desktop** | GNOME (for workspace/window bindings) |
+| **Terminal** | kitty (for tab/scroll aliases) |
+| **Tool** | Kanata |
 
-The layout follows a **minimal-layer** approach with **tap-hold** as the primary mechanism:
+---
 
-1. **Layer 1 (Base)**: Normal typing with tap-hold modifiers
-2. **Layer 2 (Windows)**: Hold Left Meta for window/workspace management
-3. **Layer 3 (Editing)**: Hold Space for text editing and navigation
+## The 5 Layers
+
+The configuration is organized into five layers. Four are accessed via tap-hold on physical keys; one is always active as the base.
+
+| Layer | Name | Trigger | Purpose |
+|-------|------|---------|---------|
+| **Layer 1** | Base | Default | Typing with tap-hold modifiers and smart symbol keys |
+| **Layer 2** | Window/Workspace | Hold **Left Meta** | GNOME window tiling, workspace switching, kitty tabs |
+| **Layer 3** | Symbols | Hold **Spacebar** | Direct access to programming symbols without Shift |
+| **Layer 4** | Editing | Hold **Left Ctrl** | Arrow keys, text deletion, mouse wheel emulation |
+| **Layer 5** | Numbers | Hold **Right Ctrl** | Numpad-style number entry on the left hand |
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    LAYER ARCHITECTURE                       │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│   F1-F12 Row    →  System controls (media, workspaces)       │
-│   Number Row    →  Shift symbols on hold (!@#$%^&*())      │
-│   Home Row      →  Modifiers on hold (Meta/Alt/Ctrl)         │
-│   Left Meta     →  Layer 2: Window/Workspace management      │
-│   Spacebar      →  Layer 3: Text editing + mouse wheel       │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                      LAYER ARCHITECTURE                         │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Layer 1 (Base)      →  Default; tap-hold everywhere            │
+│   Layer 2 (Window)    →  Hold Left Meta / Super key             │
+│   Layer 3 (Symbols)   →  Hold Spacebar                          │
+│   Layer 4 (Editing)   →  Hold Left Ctrl                         │
+│   Layer 5 (Numbers)   →  Hold Right Ctrl                        │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## ✨ Features
+## Key Concepts
 
-### 🎹 Tap-Hold Modifiers (Home Row)
+### Tap-Hold Modifiers
 
-Transform the home row into modifiers when held:
+The home row acts as modifiers when held, letters when tapped:
 
 | Key | Tap | Hold |
 |-----|-----|------|
-| `S` | `s` | Left Meta (Super/Windows) |
+| `A` | `a` | `Ctrl+A` (select all) |
+| `S` | `s` | Left Meta (Super) |
 | `D` | `d` | Left Alt |
 | `F` | `f` | Left Ctrl |
-| `H` | `h` | Shift+\` (GNOME activity overview) |
+| `H` | `h` | `Shift+`` (GNOME Activities) |
 | `J` | `j` | Right Ctrl |
 | `K` | `k` | Right Alt |
 | `L` | `l` | Right Meta |
-| `Backspace` | `backspace` | `delete` |
-| `Enter` | `enter` | Right Alt |
 
-### 🔢 Smart Number Row
+### Smart Number Row
 
-Numbers output symbols when held — no more reaching for Shift:
+Symbols are emitted when the number row keys are held — no Shift required:
 
 | Key | Tap | Hold |
 |-----|-----|------|
-| `` ` `` | \` | `~` |
+| `` ` `` | `` ` `` | `~` |
 | `1` | `1` | `!` |
 | `2` | `2` | `@` |
 | `3` | `3` | `#` |
@@ -98,85 +101,86 @@ Numbers output symbols when held — no more reaching for Shift:
 | `-` | `-` | `_` |
 | `=` | `=` | `+` |
 
-### 🐱 kitty Terminal Integration
+### Bracket Modifiers
 
-Special bindings for the kitty terminal:
+Punctuation keys output shifted variants on hold:
 
-| Alias | Function |
-|-------|----------|
-| `pt` / `nt` | Previous/Next tab |
-| `mls` / `mrs` | Scroll left/right |
-| `pp` | Close tab |
+| Key | Tap | Hold |
+|-----|-----|------|
+| `[` | `[` | `{` |
+| `]` | `]` | `}` |
+| `;` | `;` | `:` |
+| `'` | `'` | `"` |
+| `,` | `,` | `<` |
+| `.` | `.` | `>` |
+| `/` | `/` | `?` |
 
-### 🐭 Mouse Wheel Layer
+### Function Row
 
-Hold Spacebar to access mouse wheel controls:
+The `F1`–`F12` row is remapped to system and media controls:
 
-```
-Layer 3 (Space held):
-┌───┬───┬───┐
-│ ← │ ↑ │ → │  Mouse wheel directions
-│ J │ K │ L │  (hold Space + these keys)
-└───┼───┼───┘
-    │ ↓ │
-    └───┘
-```
+| Key | Hold Action |
+|-----|-------------|
+| `F1` | Mute |
+| `F2` | Play/pause |
+| `F3` | Decrease display brightness |
+| `F4` | Increase display brightness |
+| `F5` | Mute microphone |
+| `F6` | Volume down |
+| `F7` | Volume up |
+| `F8` | Toggle microphone |
+| `F9` | Take screenshot |
+| `F10` | Lock screen |
+| `F11` | Unmapped |
+| `F12` | Unmapped |
 
 ---
 
-## 🚀 Installation
+## Installation
 
-### Prerequisites
+### Install Kanata
 
 ```bash
-# Install kanata
-# Via Homebrew (Linuxbrew)
-brew install kanata
-
 # Via cargo
 cargo install kanata
 
-# Via GitHub releases
-# Download from: https://github.com/jtroo/kanata/releases
+# Or download from GitHub releases
+# https://github.com/jtroo/kanata/releases
 ```
 
-### Setup udev Rules (Linux)
+### Configure udev (Linux)
 
 ```bash
-# Create uinput permissions
 sudo groupadd -f uinput
 sudo usermod -aG input $USER
 sudo usermod -aG uinput $USER
 
-# Create udev rule
 echo 'KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"' | \
     sudo tee /etc/udev/rules.d/99-kanata.rules
 
-# Reload udev
 sudo udevadm control --reload-rules
 sudo udevadm trigger
 ```
 
-### Clone and Configure
+Log out and back in for group changes to take effect.
+
+### Clone and Deploy
 
 ```bash
-# Clone this repository
 git clone https://github.com/stefan-hacks/keyhack-kanata.git
 cd keyhack-kanata
 
-# Copy config to kanata location
 mkdir -p ~/.config/kanata
-cp kanata.kbd ~/.config/kanata/
+cp kanata_gnome.kbd ~/.config/kanata/kanata.kbd
 ```
 
-### Systemd Service (Recommended)
+### Systemd User Service
 
 Create `~/.config/systemd/user/kanata.service`:
 
 ```ini
 [Unit]
 Description=Kanata keyboard remapper
-Documentation=https://github.com/jtroo/kanata
 After=default.target
 
 [Service]
@@ -194,307 +198,209 @@ WantedBy=default.target
 Enable and start:
 
 ```bash
-# Enable user service
 systemctl --user daemon-reload
 systemctl --user enable kanata.service
 systemctl --user start kanata.service
-systemctl --user status kanata.service
-```
-
-Or use the provided helper script:
-
-```bash
-chmod +x kanata_load.sh
-./kanata_load.sh
 ```
 
 ---
 
-## 🔧 Configuration Breakdown
+## Configuration Files
 
-### Global Settings
+| File | Purpose |
+|------|---------|
+| `kanata_gnome.kbd` | **Primary config** — 5 layers with GNOME/kitty integration |
+| `kanata.bak` | Legacy 3-layer config (retained for reference) |
 
-```lisp
-(defcfg
-  process-unmapped-keys yes   ; Process all keys
-  log-layer-changes no        ; Disable noisy layer logging
-)
-```
-
-### Variable Definitions
-
-```lisp
-(defvar
-  tap-time 200    ; 200ms for tap detection
-  hold-time 200   ; 200ms for hold detection
-)
-```
-
-> **Note:** These values are tuned for laptop use. Increase if you experience accidental holds.
-
-### Key Aliases Explained
-
-#### Navigation Keys
-
-| Alias | Description |
-|-------|-------------|
-| `yy` | `home` — beginning of line |
-| `uu` | `pgdn` — page down |
-| `ii` | `pgup` — page up |
-| `oo` | `end` — end of line |
-
-#### Text Deletion
-
-| Alias | Description |
-|-------|-------------|
-| `tbd` | `Ctrl+w` — delete word backward (terminal style) |
-| `tfd` | `Alt+d` — delete word forward |
-| `dwb` | `Ctrl+backspace` — delete word backward |
-| `dwf` | `Ctrl+delete` — delete word forward |
-| `bdl` | `Ctrl+backspace` — beginning delete line |
-| `fdl` | `Shift+Ctrl+delete` — forward delete line |
-
-#### Bracket Modifiers
-
-| Alias | Tap | Hold |
-|-------|-----|------|
-| `so` | `[` | `{` |
-| `sc` | `]` | `}` |
-| `pi` | `\` | `\|` |
-| `se` | `;` | `:` |
-| `ap` | `'` | `"` |
-| `co` | `,` | `<` |
-| `fu` | `.` | `>` |
-| `fs` | `/` | `?` |
-| `gm` | `` ` `` | `~` |
+Use `kanata_gnome.kbd` as the active configuration. It is tuned for GNOME desktop environments and assumes kitty is the default terminal for tab/scroll aliases.
 
 ---
 
-## 📚 Layer Reference
+## Layer Reference
 
-### Layer 1 — Base Layer
+### Layer 1 — Base
 
-Standard QWERTY with tap-hold modifiers on almost every key.
+Default typing layer. Nearly every key has a tap-hold dual role.
 
 ```
 ┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│Esc │@qtd│@pum│@dsb│@isb│@mut│@vdn│@vup│@mic│@psc│@lts│F11 │F12 │
+│Esc │Mute│P/P │Br- │Br+ │MicM│Vol-│Vol+│MicT│Sshot│Lck│F11 │F12 │
 └────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
 
 ┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│@gm │@1m │@2m │@3m │@4m │@5m │@6m │@7m │@8m │@9m │@0m │@mi │@pl │bspc│
+│ ~  │ !  │ @  │ #  │ $  │ %  │ ^  │ &  │ *  │ (  │ )  │ _  │ +  │Bspc│
+│hold│hold│hold│hold│hold│hold│hold│hold│hold│hold│hold│hold│hold│    │
 └────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
 
 ┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│tab │@qq │@ww │ e  │@rr │@tt │@yy │@uu │@ii │@oo │ p  │@so │@sc │@pi │
+│Tab │C-q │C-w │ e  │C-r │C-t │Home│PgDn│PgUp│End │ p  │ {  │ }  │ |  │
+│    │hold│hold│    │hold│hold│hold│hold│hold│hold│    │hold│hold│hold│
 └────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
 
 ┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│esc │@aa │@ss │@dd │@ff │ g  │@hh │@jj │@kk │@ll │@se │@ap │ret │
+│Esc │C-a │S=LM│D=LA│F=LC│ g  │H=SA│J=RC│K=RA│L=RM│ :  │ "  │Ret │
+│    │hold│hold│hold│hold│    │hold│hold│hold│hold│hold│hold│    │
 └────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
 
 ┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│lsft│@zz │@xx │@cc │@vv │ b  │ n  │ m  │@co │@fu │@fs │rsft│
+│Sft │C-z │C-x │C-c │C-v │ b  │ n  │ m  │ <  │ >  │ ?  │Sft │
+│    │hold│hold│hold│hold│    │    │    │hold│hold│hold│    │
 └────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
 
 ┌────┬────┬────┬─────────────────┬────┬────┐
-│lctl│@l2 │@la │      @l3        │@ra │ _  │ _  │
+│L4  │L2  │Bspc│      L3         │Ret │L5  │
+│LCtl│LMet│=Del│     (Space)     │=RAlt│RCtl│
 └────┴────┴────┴─────────────────┴────┴────┘
-        (hold for layer 2) (hold for layer 3)
 ```
 
-### Layer 2 — Window/Workspace Layer
+### Layer 2 — Window/Workspace
 
-Hold **Left Meta** to access GNOME window management:
+Hold **Left Meta** (`S` key or physical Windows key) to activate.
 
-```
-┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│Esc │ _  │ _  │ _  │ _  │ _  │ _  │ _  │ _  │ _  │ _  │ _  │lrld│
-└────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
-              (reload config)
+| Key | Action |
+|-----|--------|
+| `Y` / `U` / `I` / `O` | Window tile left / display left / display right / tile right |
+| `H` / `J` / `K` / `L` | Workspace previous / down / up / next |
+| `N` / `M` / `,` / `.` | Switch to workspace 1 / 2 / 3 / 4 |
+| `P` | Close kitty tab (`C-M-/`) |
+| `[` / `]` | Previous / next kitty tab (`C-M-,` / `C-M-.`) |
+| `;` / `'` | kitty scroll left / right (`S-M-h` / `S-M-l`) |
+| `F12` | Reload Kanata config (`lrld`) |
 
-┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│ `  │ _  │ _  │ _  │ _  │ _  │ 6  │ 7  │ 8  │ 9  │ 0  │ _  │ _  │bspc│
-└────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
+### Layer 3 — Symbols
 
-┌────┬────┬────┬────┬────┬────┬────────┬────────┬────────┬────────┬───┬───┬───┬───┐
-│tab │ _  │ _  │ _  │ _  │ _  │@wtl    │@dsl    │@dsr    │@wtr    │@pp│@pt│@nt│ \ │
-└────┴────┴────┴────┴────┴────┴────────┴────────┴────────┴────────┴───┴───┴───┴───┘
-       (Window snap) (Display L/R)
+Hold **Spacebar** to activate. Outputs programming symbols directly.
 
-┌────┬────┬────┬────┬────┬────┬──────┬──────┬──────┬──────┬────┬────┬────┐
-│esc │ _  │ _  │ _  │ _  │ _  │@rpl  │@rpd  │@rpu  │@rpr  │@mls│@mrs│ret │
-└────┴────┴────┴────┴────┴────┴──────┴──────┴──────┴──────┴────┴────┴────┘
-       (Workspace navigation: ←↓↑→)
+| Row | Mapping |
+|-----|---------|
+| Number row | Unmapped |
+| `Q`–`T` | `!` `@` `#` `$` `%` |
+| `Y`–`P` | Unmapped, `(`, `)`, `[`, `]` |
+| `A`–`F` | `^` `&` `*` `/` `` ` `` |
+| `G`–`L` | `~` `\|` `:` `"` |
+| `Z`–`/` | `-` `_` `=` `=` `\` `\|` `<` `>` `,` `.` `?` |
 
-┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│lsft│ _  │ _  │ _  │ _  │ _  │@w1 │@w2 │@w3 │@w4 │ _  │rsft│
-└────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
-       (Switch to workspace 1-4)
-```
+This layer removes the need to chord Shift for common programming characters.
 
-### Layer 3 — Editing Layer
+### Layer 4 — Editing
 
-Hold **Spacebar** to access text editing and mouse controls:
+Hold **Left Ctrl** to activate.
 
-```
-┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│Esc │@qtd│@pum│@dsb│@isb│@mut│@vdn│@vup│@mic│@psc│@lts│ _  │ _  │
-└────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
+| Key | Action |
+|-----|--------|
+| `H` / `J` / `K` / `L` | Mouse wheel left / down / up / right |
+| `Y` / `U` / `I` / `O` | Arrow left / down / up / right |
+| `P` | Delete to beginning of line (`C-u`) |
+| `[` | Delete to end of line (`C-k`) |
+| `N` / `M` | Delete word backward / forward (`C-Bspc` / `C-Del`) |
+| `,` / `.` | Delete word backward terminal-style (`C-w`) / forward (`A-d`) |
 
-┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│ `  │ _  │ _  │ _  │ _  │ _  │ _  │ _  │ _  │ _  │ _  │ _  │ _  │bspc│
-└────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
+### Layer 5 — Numbers
 
-┌────┬────┬────┬────┬────┬────┬────────┬────────┬────────┬────────┬───┬────┬────┬───┐
-│tab │ _  │ _  │ _  │ _  │ _  │@mwl    │@mwd    │@mwu    │@mwr    │ p │@dtb│@dte│ _ │
-└────┴────┴────┴────┴────┴────┴────────┴────────┴────────┴────────┴───┴────┴────┴───┘
-       (Mouse wheel: ← ↓ ↑ →)
+Hold **Right Ctrl** to activate. Places a numpad under the left hand.
 
-┌────┬────┬────┬────┬────┬────┬─────┬─────┬─────┬─────┬─────┬─────┬────┐
-│esc │ _  │ _  │ _  │ _  │ _  │left │down │ up  │rght │bspc │del  │ret │
-└────┴────┴────┴────┴────┴────┴─────┴─────┴─────┴─────┴─────┴─────┴────┘
-       (Arrow keys)
+| Key | Output |
+|-----|--------|
+| `Q` | `+` |
+| `W` / `E` / `R` / `T` | `9` `8` `7` `-` |
+| `A` / `S` / `D` / `F` | `/` `6` `5` `4` |
+| `Z` / `X` / `C` / `V` | `=` `3` `2` `1` |
+| `G` | `0` |
 
-┌────┬────┬────┬────┬────┬────┬─────┬─────┬─────┬─────┬────┬────┐
-│lsft│ _  │ _  │ _  │ _  │ _  │@dwb │@dwf │@tbd │@tfd │ _  │rsft│
-└────┴────┴────┴────┴────┴────┴─────┴─────┴─────┴─────┴────┴────┘
-       (Delete word back/fwd, Tab back/fwd)
-```
+Ideal for quick numeric entry without moving the right hand from the mouse.
 
 ---
 
-## 🖥️ Hardware Context
-
-### HP EliteBook 840 G8 Layout
-
-```
-┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
-│ Esc │ F1  │ F2  │ F3  │ F4  │ F5  │ F6  │ F7  │ F8  │ F9  │ F10 │ F11 │ F12 │
-│     │ Mute│Vol- │Vol+ │Mic  │Brgt-│Brgt+│Airpl│ Pres│ Call│ Proj│ Bri-│ Bri+│
-└─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘
-
-┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬───────┐
-│  `  │  1  │  2  │  3  │  4  │  5  │  6  │  7  │  8  │  9  │  0  │  -  │  =  │ Bksp  │
-└─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴───────┘
-
-┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
-│ Tab │  Q  │  W  │  E  │  R  │  T  │  Y  │  U  │  I  │  O  │  P  │  [  │  ]  │  \  │
-└─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘
-
-┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
-│Caps │  A  │  S  │  D  │  F  │  G  │  H  │  J  │  K  │  L  │  ;  │  '  │Enter│
-└─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘
-
-┌───────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────────┐
-│ Shift │  Z  │  X  │  C  │  V  │  B  │  N  │  M  │  ,  │  .  │  /  │ Shift   │
-└───────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────────┘
-
-┌─────┬─────┬─────┬───────────────────────────────┬─────┬─────┬─────┐
-│Ctrl │ Win │ Alt │           Spacebar            │AltGr│ Win │Ctrl │
-└─────┴─────┴─────┴───────────────────────────────┴─────┴─────┴─────┘
-```
-
----
-
-## 🎨 Customization
+## Customization
 
 ### Adjust Tap-Hold Timing
 
-If you're getting accidental modifiers or missed modifiers:
+If modifiers trigger too easily or too slowly:
 
 ```lisp
 (defvar
-  tap-time 300    ; Increase for slower typing
-  hold-time 300
+  tap-time 250    ; milliseconds
+  hold-time 250
 )
 ```
 
-### Add More Layers
+Increase for slower typing cadence; decrease for faster response.
+
+### Change GNOME Workspace Shortcuts
+
+The aliases `rpl`, `rpd`, `rpu`, `rpr` map to GNOME's `Meta+arrow` defaults. If your GNOME uses different bindings, update the aliases in `kanata_gnome.kbd`:
 
 ```lisp
-;; In defalias section
+rpl M-left    ; previous workspace
+rpr M-rght    ; next workspace
+```
+
+### Add a Layer
+
+```lisp
+;; Alias
 sym (layer-toggle symbols)
 
-;; In deflayer section
+;; Layer definition
 (deflayer symbols
   ...
 )
 ```
 
-### Change GNOME Shortcuts
-
-Modify the workspace/workspace navigation aliases for your setup:
-
-```lisp
-;; Default GNOME shortcuts
-rpl M-left    ; Previous workspace
-rpr M-rght    ; Next workspace
-
-;; Custom shortcuts (e.g., Ctrl+Alt+arrows)
-rpl C-A-left
-rpr C-A-rght
-```
-
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
-### Kanata Won't Start
+### Kanata will not start
 
 ```bash
-# Check uinput group
+# Verify uinput group membership
 groups $USER | grep uinput
 
-# If not present, re-login or use:
-newgrp uinput
-
-# Check device permissions
+# Check device node
 ls -la /dev/uinput
-# Should show: crw-rw---- 1 root uinput
+# Expected: crw-rw---- 1 root uinput
 ```
 
-### Service Fails to Start
+### Service failures
 
 ```bash
-# Check logs
+# Logs
 journalctl --user -u kanata.service -f
 
-# Run in debug mode
+# Debug mode
 kanata --cfg ~/.config/kanata/kanata.kbd --debug
 ```
 
-### Keys Not Responding
+### Keys not responding
 
 ```bash
-# Check if kanata is running
-ps aux | grep kanata
+# Check process
+pgrep -a kanata
 
-# Kill kanata and restart
+# Restart
 pkill kanata
 kanata --cfg ~/.config/kanata/kanata.kbd
 ```
 
-### Accidental Holds / Double Types
+### Accidental holds / double taps
 
-1. Increase `tap-time` in the config (try 250-300ms)
-2. Adjust your typing style — lift fingers quickly between keys
-3. Use `tap-hold-release` instead of `tap-hold`:
+1. Increase `tap-time` and `hold-time` to 250–300 ms.
+2. Switch to `tap-hold-release` in aliases if `tap-hold` is too aggressive:
 
 ```lisp
-;; Old:
+;; Replace:
 ss (tap-hold $tap-time $hold-time s lmet)
 
-;; New:
+;; With:
 ss (tap-hold-release $tap-time $hold-time s lmet)
 ```
 
-### kitty-specific Issues
+### kitty shortcuts not working
 
-If kitty shortcuts don't work, check your kitty.conf:
+Ensure `kitty.conf` does not conflict:
 
-```bash
-# In ~/.config/kitty/kitty.conf
+```
 map ctrl+shift+t new_tab
 map ctrl+shift+w close_tab
 map ctrl+shift+, previous_tab
@@ -503,29 +409,18 @@ map ctrl+shift+. next_tab
 
 ---
 
-## 📖 Resources
+## Resources
 
-- **[Kanata Repository](https://github.com/jtroo/kanata)** — Official documentation
-- **[Kanata Config Guide](https://github.com/jtroo/kanata/blob/main/docs/config.adoc)** — Complete configuration reference
-- **[Kanata Simulator](https://jtroo.github.io/)** — Test configs in browser
-- **[HP EliteBook Support](https://support.hp.com)** — Hardware documentation
-
----
-
-## 📄 License
-
-MIT License — See [LICENSE](LICENSE) file
+- [Kanata Repository](https://github.com/jtroo/kanata) — Official documentation and source
+- [Kanata Configuration Guide](https://github.com/jtroo/kanata/blob/main/docs/config.adoc) — Complete syntax reference
+- [Kanata Web Simulator](https://jtroo.github.io/) — Test configurations in browser before deploying
 
 ---
 
-## 🙏 Acknowledgments
+## License
 
-- [jtroo](https://github.com/jtroo) for creating Kanata
-- The QMK firmware project for inspiration
-- The GNOME community for their excellent desktop environment
+MIT License — See [LICENSE](LICENSE) file.
 
 ---
 
-**Maintained by:** @stefan-hacks  
-**Last Updated:** 2026-05-11  
-**Tested On:** HP EliteBook 840 G8 + Debian 12 + GNOME 43 + kitty 0.31
+**Maintained by:** @stefan-hacks
