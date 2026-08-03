@@ -11,10 +11,14 @@
 
 - [Overview](#overview)
 - [The 5 Layers](#the-5-layers)
+  - [Layer 1 — Base](#layer-1--base)
+  - [Layer 2 — Window/Workspace](#layer-2--windowworkspace)
+  - [Layer 3 — Symbols](#layer-3--symbols)
+  - [Layer 4 — Editing](#layer-4--editing)
+  - [Layer 5 — Numbers](#layer-5--numbers)
 - [Key Concepts](#key-concepts)
 - [Installation](#installation)
 - [Configuration Files](#configuration-files)
-- [Layer Reference](#layer-reference)
 - [Customization](#customization)
 - [Troubleshooting](#troubleshooting)
 - [Resources](#resources)
@@ -40,29 +44,100 @@ The design philosophy is **layers over reach** — instead of stretching for mod
 
 ## The 5 Layers
 
-The configuration is organized into five layers. Four are accessed via tap-hold on physical keys; one is always active as the base.
-
 | Layer | Name | Trigger | Purpose |
 |-------|------|---------|---------|
 | **Layer 1** | Base | Default | Typing with tap-hold modifiers and smart symbol keys |
-| **Layer 2** | Window/Workspace | Hold **Left Meta** | GNOME window tiling, workspace switching, kitty tabs |
+| **Layer 2** | Window/Workspace | Hold **Left Meta** | GNOME window tiling, workspace switching, media controls |
 | **Layer 3** | Symbols | Hold **Spacebar** | Direct access to programming symbols without Shift |
 | **Layer 4** | Editing | Hold **Left Shift** | Arrow keys, text deletion, mouse wheel emulation |
 | **Layer 5** | Numbers | Hold **Right Shift** | Numpad-style number entry on the left hand |
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                      LAYER ARCHITECTURE                         │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│   Layer 1 (Base)      →  Default; tap-hold everywhere            │
-│   Layer 2 (Window)    →  Hold Left Meta / Super key             │
-│   Layer 3 (Symbols)   →  Hold Spacebar                          │
-│   Layer 4 (Editing)   →  Hold Left Shift                        │
-│   Layer 5 (Numbers)   →  Hold Right Shift                       │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
+---
+
+### Layer 1 — Base
+
+![Layer 1 — Base](assets/layer1_base.png)
+
+Default typing layer. Nearly every key has a tap-hold dual role — tap for the letter, hold for the modifier or action shown in blue.
+
+**Key features:**
+- **Home row modifiers:** `S`/`D`/`F`/`J`/`K`/`L` become Meta/Alt/Ctrl when held
+- **`A` key:** tap=`a`, hold=**Left Shift** (triggers Layer 4)
+- **`;` key:** tap=`;`, hold=**Right Shift** (triggers Layer 5)
+- **Smart number row:** digits output symbols when held (`1`→`!`, `2`→`@`, etc.)
+- **F-row media controls:** brightness, volume, screenshot, lock screen
+- **Caps/Esc swapped:** physical Caps Lock sends `Esc`; physical Esc sends `Caps Lock`
+
+---
+
+### Layer 2 — Window/Workspace
+
+![Layer 2 — Window/Workspace](assets/layer2_window.png)
+
+Hold **Left Meta** (`S` key or physical Windows key) to activate.
+
+| Key | Action |
+|-----|--------|
+| `Y` / `O` | Move window to previous/next display |
+| `U` / `I` | Switch to workspace left/right |
+| `H` / `J` / `K` / `L` | Workspace previous / down / up / next |
+| `N` / `M` / `,` / `.` | Switch to workspace 1 / 2 / 3 / 4 |
+| `P` | Play/pause media |
+| `[` / `]` | Previous track / next track |
+| `;` / `'` | kitty scroll left / right |
+| `F12` | Reload Kanata config (`lrld`) |
+
+---
+
+### Layer 3 — Symbols
+
+![Layer 3 — Symbols](assets/layer3_symbols.png)
+
+Hold **Spacebar** to activate. Outputs programming symbols directly — no Shift chord required.
+
+| Row | Mapping |
+|-----|---------|
+| Number row | Unmapped |
+| `Q`–`T` | `!` `@` `#` `$` `%` |
+| `Y` | `0` |
+| `U`–`P` | `(` `)` `{` `}` |
+| `[` / `]` | `[` `]` |
+| `A`–`F` | `^` `&` `*` `/` `` ` `` |
+| `G`–`L` | `~` `\|` `:` `"` |
+| `Z`–`/` | `-` `+` `_` `=` `\` `<` `>` `,` `.` `?` |
+
+---
+
+### Layer 4 — Editing
+
+![Layer 4 — Editing](assets/layer4_editing.png)
+
+Hold **Left Shift** to activate.
+
+| Key | Action |
+|-----|--------|
+| `H` / `J` / `K` / `L` | Mouse wheel left / down / up / right |
+| `Y` / `U` / `I` / `O` | Arrow left / down / up / right |
+| `P` | Delete to beginning of line (`C-u`) |
+| `[` | Delete to end of line (`C-k`) |
+| `N` / `M` | Delete word backward / forward (`C-Bspc` / `C-Del`) |
+| `,` / `.` | Delete word backward terminal-style (`C-w`) / forward (`A-d`) |
+
+---
+
+### Layer 5 — Numbers
+
+![Layer 5 — Numbers](assets/layer5_numbers.png)
+
+Hold **Right Shift** to activate. Places a numpad under the left hand for quick numeric entry without moving the right hand from the mouse.
+
+| Key | Output |
+|-----|--------|
+| `Q` | `+` |
+| `W` / `E` / `R` / `T` | `9` `8` `7` `-` |
+| `A` / `S` / `D` / `F` | `/` `6` `5` `4` |
+| `Z` / `X` / `C` / `V` | `=` `3` `2` `1` |
+| `G` | `0` |
 
 ---
 
@@ -86,7 +161,7 @@ The home row acts as modifiers when held, letters when tapped:
 
 ### Smart Number Row
 
-Symbols are emitted when the number row keys are held — no Shift required:
+Symbols are emitted when the number row keys are held:
 
 | Key | Tap | Hold |
 |-----|-----|------|
@@ -120,7 +195,7 @@ Punctuation keys output shifted variants on hold:
 
 ### Function Row
 
-The `F1`–`F12` row is remapped to system and media controls:
+The `F1`–`F12` row is remapped to system controls:
 
 | Key | Hold Action |
 |-----|-------------|
@@ -136,10 +211,6 @@ The `F1`–`F12` row is remapped to system and media controls:
 | `F10` | Lock screen (`Ctrl+Alt+Meta+L`) |
 | `F11` | Unmapped |
 | `F12` | Unmapped |
-
-### Caps Lock / Esc Swap
-
-Across **all layers**, the physical `Caps Lock` key sends `Esc`, and the physical `Esc` key sends `Caps Lock`.
 
 ---
 
@@ -220,78 +291,6 @@ systemctl --user start kanata.service
 | `kanata.bak` | Legacy 3-layer config (retained for reference) |
 
 Use `kanata_gnome.kbd` as the active configuration. It is tuned for GNOME desktop environments and assumes kitty is the default terminal for tab/scroll aliases.
-
----
-
-## Layer Reference
-
-### Layer 1 — Base
-
-![Layer 1 — Base](assets/layer1_base.png)
-
-Default typing layer. Nearly every key has a tap-hold dual role. Tap for the letter, hold for the modifier or action shown in blue. The `Caps Lock` and `Esc` keys are swapped — the physical Caps Lock position sends `Esc`, and the physical Esc position sends `Caps Lock`.
-
-### Layer 2 — Window/Workspace
-
-![Layer 2 — Window/Workspace](assets/layer2_window.png)
-
-Hold **Left Meta** (`S` key or physical Windows key) to activate.
-
-| Key | Action |
-|-----|--------|
-| `Y` / `U` / `I` / `O` | Move window to previous display / workspace left / workspace right / move window to next display |
-| `H` / `J` / `K` / `L` | Workspace previous / down / up / next |
-| `N` / `M` / `,` / `.` | Switch to workspace 1 / 2 / 3 / 4 |
-| `P` | Play/pause media |
-| `[` / `]` | Previous track / next track |
-| `;` / `'` | kitty scroll left / right (`S-M-h` / `S-M-l`) |
-| `F12` | Reload Kanata config (`lrld`) |
-
-### Layer 3 — Symbols
-
-![Layer 3 — Symbols](assets/layer3_symbols.png)
-
-Hold **Spacebar** to activate. Outputs programming symbols directly. This layer removes the need to chord Shift for common programming characters.
-
-| Row | Mapping |
-|-----|---------|
-| Number row | Unmapped |
-| `Q`–`T` | `!` `@` `#` `$` `%` |
-| `Y` | `0` |
-| `U`–`P` | `(` `)` `{` `}` |
-| `[` / `]` | `[` `]` |
-| `A`–`F` | `^` `&` `*` `/` `` ` `` |
-| `G`–`L` | `~` `\|` `:` `"` |
-| `Z`–`/` | `-` `+` `_` `=` `\` `<` `>` `,` `.` `?` |
-
-### Layer 4 — Editing
-
-![Layer 4 — Editing](assets/layer4_editing.png)
-
-Hold **Left Shift** to activate.
-
-| Key | Action |
-|-----|--------|
-| `H` / `J` / `K` / `L` | Mouse wheel left / down / up / right |
-| `Y` / `U` / `I` / `O` | Arrow left / down / up / right |
-| `P` | Delete to beginning of line (`C-u`) |
-| `[` | Delete to end of line (`C-k`) |
-| `N` / `M` | Delete word backward / forward (`C-Bspc` / `C-Del`) |
-| `,` / `.` | Delete word backward terminal-style (`C-w`) / forward (`A-d`) |
-
-### Layer 5 — Numbers
-
-![Layer 5 — Numbers](assets/layer5_numbers.png)
-
-Hold **Right Shift** to activate. Places a numpad under the left hand. Ideal for quick numeric entry without moving the right hand from the mouse.
-
-| Key | Output |
-|-----|--------|
-| `Q` | `+` |
-| `W` / `E` / `R` / `T` | `9` `8` `7` `-` |
-| `A` / `S` / `D` / `F` | `/` `6` `5` `4` |
-| `Z` / `X` / `C` / `V` | `=` `3` `2` `1` |
-| `G` | `0` |
 
 ---
 
