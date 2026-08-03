@@ -47,8 +47,8 @@ The configuration is organized into five layers. Four are accessed via tap-hold 
 | **Layer 1** | Base | Default | Typing with tap-hold modifiers and smart symbol keys |
 | **Layer 2** | Window/Workspace | Hold **Left Meta** | GNOME window tiling, workspace switching, kitty tabs |
 | **Layer 3** | Symbols | Hold **Spacebar** | Direct access to programming symbols without Shift |
-| **Layer 4** | Editing | Hold **Left Ctrl** | Arrow keys, text deletion, mouse wheel emulation |
-| **Layer 5** | Numbers | Hold **Right Ctrl** | Numpad-style number entry on the left hand |
+| **Layer 4** | Editing | Hold **Left Shift** | Arrow keys, text deletion, mouse wheel emulation |
+| **Layer 5** | Numbers | Hold **Right Shift** | Numpad-style number entry on the left hand |
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -74,7 +74,7 @@ The home row acts as modifiers when held, letters when tapped:
 
 | Key | Tap | Hold |
 |-----|-----|------|
-| `A` | `a` | `Ctrl+A` (select all) |
+| `A` | `a` | Left Shift |
 | `S` | `s` | Left Meta (Super) |
 | `D` | `d` | Left Alt |
 | `F` | `f` | Left Ctrl |
@@ -82,6 +82,7 @@ The home row acts as modifiers when held, letters when tapped:
 | `J` | `j` | Right Ctrl |
 | `K` | `k` | Right Alt |
 | `L` | `l` | Right Meta |
+| `;` | `;` | Right Shift |
 
 ### Smart Number Row
 
@@ -267,7 +268,7 @@ Hold **Spacebar** to activate. Outputs programming symbols directly. This layer 
 
 ![Layer 4 — Editing](assets/layer4_editing.png)
 
-Hold **Left Ctrl** to activate.
+Hold **Left Shift** to activate.
 
 | Key | Action |
 |-----|--------|
@@ -282,7 +283,7 @@ Hold **Left Ctrl** to activate.
 
 ![Layer 5 — Numbers](assets/layer5_numbers.png)
 
-Hold **Right Ctrl** to activate. Places a numpad under the left hand. Ideal for quick numeric entry without moving the right hand from the mouse.
+Hold **Right Shift** to activate. Places a numpad under the left hand. Ideal for quick numeric entry without moving the right hand from the mouse.
 
 | Key | Output |
 |-----|--------|

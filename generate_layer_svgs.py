@@ -187,21 +187,21 @@ layer1_keys = [
     {"key": "i", "tap": "I", "hold": "PgUp"}, {"key": "o", "tap": "O", "hold": "End"}, {"key": "p", "tap": "P"},
     {"key": "[", "tap": "[", "hold": "{"}, {"key": "]", "tap": "]", "hold": "}"}, {"key": "\\", "tap": "\\", "hold": "|"},
 
-    {"key": "caps", "tap": "Esc"}, {"key": "a", "tap": "A", "hold": "C-A"}, {"key": "s", "tap": "S", "hold": "LMet"},
+    {"key": "caps", "tap": "Esc"}, {"key": "a", "tap": "A", "hold": "LShift"}, {"key": "s", "tap": "S", "hold": "LMet"},
     {"key": "d", "tap": "D", "hold": "LAlt"}, {"key": "f", "tap": "F", "hold": "LCtrl"}, {"key": "g", "tap": "G"},
     {"key": "h", "tap": "H", "hold": "S-`"}, {"key": "j", "tap": "J", "hold": "RCtrl"},
     {"key": "k", "tap": "K", "hold": "RAlt"}, {"key": "l", "tap": "L", "hold": "RMet"},
-    {"key": ";", "tap": ";", "hold": ":"}, {"key": "'", "tap": "'", "hold": '"'}, {"key": "ret", "tap": "Enter", "hold": "RAlt"},
+    {"key": ";", "tap": ";", "hold": "RShift"}, {"key": "'", "tap": "'", "hold": '"'}, {"key": "ret", "tap": "Enter", "hold": "RAlt"},
 
-    {"key": "lsft", "tap": "Shift"}, {"key": "z", "tap": "Z", "hold": "C-Z"}, {"key": "x", "tap": "X", "hold": "C-X"},
+    {"key": "lsft", "tap": "Shift", "hold": "L4", "active": True}, {"key": "z", "tap": "Z", "hold": "C-Z"}, {"key": "x", "tap": "X", "hold": "C-X"},
     {"key": "c", "tap": "C", "hold": "C-C"}, {"key": "v", "tap": "V", "hold": "C-V"}, {"key": "b", "tap": "B"},
     {"key": "n", "tap": "N"}, {"key": "m", "tap": "M"},
     {"key": ",", "tap": ",", "hold": "<"}, {"key": ".", "tap": ".", "hold": ">"}, {"key": "/", "tap": "/", "hold": "?"},
-    {"key": "rsft", "tap": "Shift"},
+    {"key": "rsft", "tap": "Shift", "hold": "L5", "active": True},
 
-    {"key": "lctl", "tap": "LCtrl", "hold": "L4", "active": True}, {"key": "lmet", "tap": "LMeta", "hold": "L2", "active": True},
+    {"key": "lctl", "tap": "LCtrl"}, {"key": "lmet", "tap": "LMeta", "hold": "L2", "active": True},
     {"key": "lalt", "tap": "LAlt"}, {"key": "spc", "tap": "Space", "hold": "L3", "active": True},
-    {"key": "ralt", "tap": "RAlt"}, {"key": "rmet", "tap": "RMeta"}, {"key": "rctl", "tap": "RCtrl", "hold": "L5", "active": True},
+    {"key": "ralt", "tap": "RAlt"}, {"key": "rmet", "tap": "RMeta"}, {"key": "rctl", "tap": "RCtrl"},
 ]
 
 # Layer 2 — Window/Workspace (trigger: hold LMeta)
@@ -348,7 +348,7 @@ layer5_keys = [
 
 def generate_all():
     layers = [
-        ("layer1_base.svg", "Layer 1 — Base", "Default typing with tap-hold modifiers", layer1_keys, {"lctl", "lmet", "spc", "rctl"}),
+        ("layer1_base.svg", "Layer 1 — Base", "Default typing with tap-hold modifiers", layer1_keys, {"lsft", "lmet", "spc", "rsft"}),
         ("layer2_window.svg", "Layer 2 — Window/Workspace", "Hold Left Meta (S key) to activate", layer2_keys, set()),
         ("layer3_symbols.svg", "Layer 3 — Symbols", "Hold Spacebar to activate", layer3_keys, set()),
         ("layer4_editing.svg", "Layer 4 — Editing", "Hold Left Ctrl to activate", layer4_keys, set()),
