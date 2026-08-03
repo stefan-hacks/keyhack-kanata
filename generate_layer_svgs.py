@@ -166,10 +166,10 @@ def draw_keyboard(keys_data, layer_title, subtitle, active_keys=None):
 
 # Layer 1 — Base
 layer1_keys = [
-    {"key": "esc", "tap": "Esc"}, {"key": "f1", "tap": "F1", "hold": "Mute"}, {"key": "f2", "tap": "F2", "hold": "P/P"},
+    {"key": "esc", "tap": "Caps"}, {"key": "f1", "tap": "F1", "hold": "Quake"}, {"key": "f2", "tap": "F2", "hold": "Run"},
     {"key": "f3", "tap": "F3", "hold": "Bri-"}, {"key": "f4", "tap": "F4", "hold": "Bri+"},
-    {"key": "f5", "tap": "F5", "hold": "Mic"}, {"key": "f6", "tap": "F6", "hold": "Vol-"},
-    {"key": "f7", "tap": "F7", "hold": "Vol+"}, {"key": "f8", "tap": "F8", "hold": "MicT"},
+    {"key": "f5", "tap": "F5", "hold": "Mute"}, {"key": "f6", "tap": "F6", "hold": "Vol-"},
+    {"key": "f7", "tap": "F7", "hold": "Vol+"}, {"key": "f8", "tap": "F8", "hold": "Mic"},
     {"key": "f9", "tap": "F9", "hold": "Shot"}, {"key": "f10", "tap": "F10", "hold": "Lock"},
     {"key": "f11", "tap": "F11"}, {"key": "f12", "tap": "F12"},
 
@@ -199,14 +199,14 @@ layer1_keys = [
     {"key": ",", "tap": ",", "hold": "<"}, {"key": ".", "tap": ".", "hold": ">"}, {"key": "/", "tap": "/", "hold": "?"},
     {"key": "rsft", "tap": "Shift"},
 
-    {"key": "lctl", "tap": "LCtrl", "hold": "Layer 4", "active": True}, {"key": "lmet", "tap": "LMeta", "hold": "Layer 2", "active": True},
-    {"key": "lalt", "tap": "LAlt"}, {"key": "spc", "tap": "Space", "hold": "Layer 3", "active": True},
-    {"key": "ralt", "tap": "RAlt"}, {"key": "rmet", "tap": "RMeta"}, {"key": "rctl", "tap": "RCtrl", "hold": "Layer 5", "active": True},
+    {"key": "lctl", "tap": "LCtrl", "hold": "L4", "active": True}, {"key": "lmet", "tap": "LMeta", "hold": "L2", "active": True},
+    {"key": "lalt", "tap": "LAlt"}, {"key": "spc", "tap": "Space", "hold": "L3", "active": True},
+    {"key": "ralt", "tap": "RAlt"}, {"key": "rmet", "tap": "RMeta"}, {"key": "rctl", "tap": "RCtrl", "hold": "L5", "active": True},
 ]
 
 # Layer 2 — Window/Workspace (trigger: hold LMeta)
 layer2_keys = [
-    {"key": "esc", "tap": "Esc"}, {"key": "f1", "tap": ""}, {"key": "f2", "tap": ""},
+    {"key": "esc", "tap": "Caps"}, {"key": "f1", "tap": ""}, {"key": "f2", "tap": ""},
     {"key": "f3", "tap": ""}, {"key": "f4", "tap": ""}, {"key": "f5", "tap": ""},
     {"key": "f6", "tap": ""}, {"key": "f7", "tap": ""}, {"key": "f8", "tap": ""},
     {"key": "f9", "tap": ""}, {"key": "f10", "tap": ""}, {"key": "f11", "tap": ""}, {"key": "f12", "tap": "Reload"},
@@ -219,8 +219,8 @@ layer2_keys = [
 
     {"key": "tab", "tap": "Tab"}, {"key": "q", "tap": ""}, {"key": "w", "tap": ""},
     {"key": "e", "tap": ""}, {"key": "r", "tap": ""}, {"key": "t", "tap": ""},
-    {"key": "y", "tap": "Tile L", "action": "Win snap"}, {"key": "u", "tap": "Disp L", "action": "Display"},
-    {"key": "i", "tap": "Disp R", "action": "Display"}, {"key": "o", "tap": "Tile R", "action": "Win snap"},
+    {"key": "y", "tap": "Disp-", "action": "Move prev"}, {"key": "u", "tap": "WS ←", "action": "Workspace"},
+    {"key": "i", "tap": "WS →", "action": "Workspace"}, {"key": "o", "tap": "Disp+", "action": "Move next"},
     {"key": "p", "tap": "Close", "action": "kitty tab"}, {"key": "[", "tap": "Prev T", "action": "kitty tab"},
     {"key": "]", "tap": "Next T", "action": "kitty tab"}, {"key": "\\", "tap": ""},
 
@@ -243,9 +243,9 @@ layer2_keys = [
 
 # Layer 3 — Symbols (trigger: hold Space)
 layer3_keys = [
-    {"key": "esc", "tap": "Esc"}, {"key": "f1", "tap": "Mute"}, {"key": "f2", "tap": "P/P"},
-    {"key": "f3", "tap": "Bri-"}, {"key": "f4", "tap": "Bri+"}, {"key": "f5", "tap": "Mic"},
-    {"key": "f6", "tap": "Vol-"}, {"key": "f7", "tap": "Vol+"}, {"key": "f8", "tap": "MicT"},
+    {"key": "esc", "tap": "Caps"}, {"key": "f1", "tap": "Mute"}, {"key": "f2", "tap": "Run"},
+    {"key": "f3", "tap": "Bri-"}, {"key": "f4", "tap": "Bri+"}, {"key": "f5", "tap": "Mute"},
+    {"key": "f6", "tap": "Vol-"}, {"key": "f7", "tap": "Vol+"}, {"key": "f8", "tap": "Mic"},
     {"key": "f9", "tap": "Shot"}, {"key": "f10", "tap": "Lock"}, {"key": "f11", "tap": ""}, {"key": "f12", "tap": ""},
 
     {"key": "grv", "tap": ""}, {"key": "1", "tap": ""}, {"key": "2", "tap": ""},
@@ -256,8 +256,8 @@ layer3_keys = [
 
     {"key": "tab", "tap": "Tab"}, {"key": "q", "tap": "!"}, {"key": "w", "tap": "@"},
     {"key": "e", "tap": "#"}, {"key": "r", "tap": "$"}, {"key": "t", "tap": "%"},
-    {"key": "y", "tap": ""}, {"key": "u", "tap": "("}, {"key": "i", "tap": ")"},
-    {"key": "o", "tap": "["}, {"key": "p", "tap": "]"}, {"key": "[", "tap": "["}, {"key": "]", "tap": "]"},
+    {"key": "y", "tap": "0"}, {"key": "u", "tap": "("}, {"key": "i", "tap": ")"},
+    {"key": "o", "tap": "{"}, {"key": "p", "tap": "}"}, {"key": "[", "tap": "["}, {"key": "]", "tap": "]"},
     {"key": "\\", "tap": ""},
 
     {"key": "caps", "tap": "Esc"}, {"key": "a", "tap": "^"}, {"key": "s", "tap": "&"},
@@ -265,8 +265,8 @@ layer3_keys = [
     {"key": "h", "tap": "~"}, {"key": "j", "tap": "|"}, {"key": "k", "tap": ":"},
     {"key": "l", "tap": '"'}, {"key": ";", "tap": ""}, {"key": "'", "tap": ""}, {"key": "ret", "tap": "Enter"},
 
-    {"key": "lsft", "tap": "Shift"}, {"key": "z", "tap": "-"}, {"key": "x", "tap": "_"},
-    {"key": "c", "tap": "="}, {"key": "v", "tap": "="}, {"key": "b", "tap": "\\"},
+    {"key": "lsft", "tap": "Shift"}, {"key": "z", "tap": "-"}, {"key": "x", "tap": "+"},
+    {"key": "c", "tap": "_"}, {"key": "v", "tap": "="}, {"key": "b", "tap": "\\"},
     {"key": "n", "tap": "|"}, {"key": "m", "tap": "<"},
     {"key": ",", "tap": ","}, {"key": ".", "tap": "."}, {"key": "/", "tap": "?"},
     {"key": "rsft", "tap": "Shift"},

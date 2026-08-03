@@ -27,6 +27,8 @@ This configuration uses **tap-hold** mechanics to compress modifier keys, symbol
 
 The design philosophy is **layers over reach** — instead of stretching for modifier chords or function keys, every key on the home row and number row carries a secondary action when held.
 
+> **Note:** The **Caps Lock** and **Esc** keys are swapped across all layers. The key in the Caps Lock position sends `Esc`, and the key in the Esc position sends `Caps Lock`.
+
 | Component | Requirement |
 |-----------|-------------|
 | **OS** | Linux |
@@ -121,18 +123,22 @@ The `F1`–`F12` row is remapped to system and media controls:
 
 | Key | Hold Action |
 |-----|-------------|
-| `F1` | Mute |
-| `F2` | Play/pause |
-| `F3` | Decrease display brightness |
-| `F4` | Increase display brightness |
-| `F5` | Mute microphone |
-| `F6` | Volume down |
-| `F7` | Volume up |
-| `F8` | Toggle microphone |
-| `F9` | Take screenshot |
-| `F10` | Lock screen |
+| `F1` | Quake terminal dropdown (`Ctrl+Alt+Q`) |
+| `F2` | Run command (`Alt+F2`) |
+| `F3` | Decrease display brightness (`Ctrl+Meta+Down`) |
+| `F4` | Increase display brightness (`Ctrl+Meta+Up`) |
+| `F5` | Toggle mute speakers/audio output (`Alt+F5`) |
+| `F6` | Volume down (`Alt+F6`) |
+| `F7` | Volume up (`Alt+F7`) |
+| `F8` | Toggle microphone (`Alt+F8`) |
+| `F9` | Take screenshot (`Alt+F9`) |
+| `F10` | Lock screen (`Ctrl+Alt+Meta+L`) |
 | `F11` | Unmapped |
 | `F12` | Unmapped |
+
+### Caps Lock / Esc Swap
+
+Across **all layers**, the physical `Caps Lock` key sends `Esc`, and the physical `Esc` key sends `Caps Lock`.
 
 ---
 
@@ -222,7 +228,7 @@ Use `kanata_gnome.kbd` as the active configuration. It is tuned for GNOME deskto
 
 ![Layer 1 — Base](assets/layer1_base.png)
 
-Default typing layer. Nearly every key has a tap-hold dual role. Tap for the letter, hold for the modifier or action shown in blue.
+Default typing layer. Nearly every key has a tap-hold dual role. Tap for the letter, hold for the modifier or action shown in blue. The `Caps Lock` and `Esc` keys are swapped — the physical Caps Lock position sends `Esc`, and the physical Esc position sends `Caps Lock`.
 
 ### Layer 2 — Window/Workspace
 
@@ -232,7 +238,7 @@ Hold **Left Meta** (`S` key or physical Windows key) to activate.
 
 | Key | Action |
 |-----|--------|
-| `Y` / `U` / `I` / `O` | Window tile left / display left / display right / tile right |
+| `Y` / `U` / `I` / `O` | Move window to previous display / workspace left / workspace right / move window to next display |
 | `H` / `J` / `K` / `L` | Workspace previous / down / up / next |
 | `N` / `M` / `,` / `.` | Switch to workspace 1 / 2 / 3 / 4 |
 | `P` | Close kitty tab (`C-M-/`) |
@@ -250,10 +256,12 @@ Hold **Spacebar** to activate. Outputs programming symbols directly. This layer 
 |-----|---------|
 | Number row | Unmapped |
 | `Q`–`T` | `!` `@` `#` `$` `%` |
-| `Y`–`P` | Unmapped, `(`, `)`, `[`, `]` |
+| `Y` | `0` |
+| `U`–`P` | `(` `)` `{` `}` |
+| `[` / `]` | `[` `]` |
 | `A`–`F` | `^` `&` `*` `/` `` ` `` |
 | `G`–`L` | `~` `\|` `:` `"` |
-| `Z`–`/` | `-` `_` `=` `=` `\` `\|` `<` `>` `,` `.` `?` |
+| `Z`–`/` | `-` `+` `_` `=` `\` `<` `>` `,` `.` `?` |
 
 ### Layer 4 — Editing
 
