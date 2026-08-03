@@ -230,7 +230,7 @@
   mwr (mwheel-right 50 120)
 )
 
-;; LAYER ONE - main mods
+;; LAYER ONE - main mods - the caps and esc key are swapped for all layers
 (deflayer one
   caps @qtd @pum @dsb @isb @mut @vdn @vup @mic @psc @lts f11  f12
   @gm  @1m  @2m  @3m  @4m  @5m  @6m  @7m  @8m  @9m  @0m  @mi  @pl  bspc
