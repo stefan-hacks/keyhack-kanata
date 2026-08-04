@@ -2,7 +2,7 @@
 
 # ⌨️ keyhack-kanata
 
-**A 5-layer [Kanata](https://github.com/jtroo/kanata) keyboard configuration for HP EliteBook 840 G8 · Debian · GNOME · kitty**
+**A 5-layer [Kanata](https://github.com/jtroo/kanata) keyboard configuration **
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Linux-blue.svg)
@@ -16,25 +16,17 @@
 
 This configuration turns a standard laptop keyboard into a five-layer, tap-hold-driven control surface. Almost every key does two jobs — a quick **tap** for its normal character, and a **hold** for a modifier, shortcut, or entire layer switch.
 
-| | |
-|---|---|
-| **Hardware** | HP EliteBook 840 G8 |
-| **OS** | Debian Linux |
-| **Desktop** | GNOME Shell |
-| **Terminal** | kitty |
-| **Engine** | [Kanata](https://github.com/jtroo/kanata) |
-
 Esc and Caps Lock are swapped on **every** layer, so Caps Lock always behaves as Esc and vice versa.
 
 ### The five layers at a glance
 
-| Layer | Held by | Purpose |
-|---|---|---|
-| **1 — Base** | *(default)* | Normal typing, with tap-hold modifiers and shortcuts on nearly every key |
-| **2 — Window / Workspace** | Left Meta (bottom row) | GNOME window snapping, display switching, workspace navigation |
-| **3 — Symbols** | Spacebar | Programming symbols without reaching for Shift |
-| **4 — Editing** | Left Shift | Arrow keys, mouse-wheel emulation, word/line deletion |
-| **5 — Numbers** | Right Shift | A left-hand numpad over the Q/W/E and A/S/D and Z/X/C block |
+| Layer                      | Held by                | Purpose                                                                  |
+| -------------------------- | ---------------------- | ------------------------------------------------------------------------ |
+| **1 — Base**               | _(default)_            | Normal typing, with tap-hold modifiers and shortcuts on nearly every key |
+| **2 — Window / Workspace** | Left Meta (bottom row) | GNOME window snapping, display switching, workspace navigation           |
+| **3 — Symbols**            | Spacebar               | Programming symbols without reaching for Shift                           |
+| **4 — Editing**            | Left Shift             | Arrow keys, mouse-wheel emulation, word/line deletion                    |
+| **5 — Numbers**            | Right Shift            | A left-hand numpad over the Q/W/E and A/S/D and Z/X/C block              |
 
 > **Note:** Left Shift and Right Shift were freed up to become layer-toggle keys. Their modifier function still exists — it just moved: hold **A** for Left Shift, hold **;** for Right Shift.
 
@@ -155,11 +147,11 @@ Both timings default to 200ms. If you're seeing accidental holds or missed taps,
 
 ### Layer-toggle keys
 
-| Key | Tap | Hold |
-|---|---|---|
-| Left Meta | Left Meta | → **Layer 2** |
-| Spacebar | Space | → **Layer 3** |
-| Left Shift | Left Shift | → **Layer 4** |
+| Key         | Tap         | Hold          |
+| ----------- | ----------- | ------------- |
+| Left Meta   | Left Meta   | → **Layer 2** |
+| Spacebar    | Space       | → **Layer 3** |
+| Left Shift  | Left Shift  | → **Layer 4** |
 | Right Shift | Right Shift | → **Layer 5** |
 
 ---
@@ -167,18 +159,21 @@ Both timings default to 200ms. If you're seeing accidental holds or missed taps,
 ## 🔧 Troubleshooting
 
 **Kanata won't start**
+
 ```bash
 groups $USER | grep uinput   # confirm group membership; re-login or `newgrp uinput` if missing
 ls -la /dev/uinput            # should show crw-rw---- 1 root uinput
 ```
 
 **Service fails to start**
+
 ```bash
 journalctl --user -u kanata.service -f
 kanata --cfg ~/.config/kanata/kanata_gnome.kbd --debug
 ```
 
 **Keys not responding**
+
 ```bash
 ps aux | grep kanata
 pkill kanata && kanata --cfg ~/.config/kanata/kanata_gnome.kbd
