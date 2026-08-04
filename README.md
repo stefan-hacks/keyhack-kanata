@@ -36,31 +36,191 @@ Esc and Caps Lock are swapped on **every** layer.
 
 ![Layer 1 — Base](01-layer1-base.png)
 
-Default typing layer. Home row modifiers: **S**=Left Meta, **D**=Left Alt, **F**=Left Ctrl, **H**=Shift+` (GNOME Activities overview), **J**=Right Ctrl, **K**=Right Alt, **L**=Right Meta. Number row is tap-hold: tap digit, hold shifted symbol. F-row system shortcuts: **F1**=quake terminal (Ctrl+Alt+Q), **F2**=run command (Alt+F2), **F3/F4**=brightness down/up (Ctrl+Meta+↓/↑), **F5**=mute (Alt+F5), **F6**=volume down (Alt+F6), **F7**=volume up (Alt+F7), **F8**=microphone (Alt+F8), **F9**=screenshot (Alt+F9), **F10**=lock screen (Ctrl+Alt+Meta+L). Top row: **Q/W/R/T**=Ctrl+Q/W/R/T, **Y/U/I/O**=Home/PgDn/PgUp/End. Brackets: **[**={, **]**=}, **\\**=|. Bottom row: **Z/X/C/V**=Ctrl+Z/X/C/V, **,/.//**=< > ?. Thumb keys: **Left Meta** (bottom row)=Layer 2, **Spacebar**=Layer 3, **Left Shift**=Layer 4, **Right Shift**=Layer 5. **Backspace** tap=backspace/hold=delete. **Enter** tap=enter/hold=Right Alt.
+#### Home-row modifiers
+
+| Key | Tap | Hold |
+|---|---|---|
+| A | a | Left Shift |
+| S | s | Left Meta |
+| D | d | Left Alt |
+| F | f | Left Ctrl |
+| H | h | Shift+` (GNOME Activities overview) |
+| J | j | Right Ctrl |
+| K | k | Right Alt |
+| L | l | Right Meta |
+| ; | ; | Right Shift |
+| ' | ' | " |
+
+#### Number row — tap digit, hold symbol
+
+| Key | Tap | Hold |
+|---|---|---|
+| ` | ` | ~ |
+| 1 | 1 | ! |
+| 2 | 2 | @ |
+| 3 | 3 | # |
+| 4 | 4 | $ |
+| 5 | 5 | % |
+| 6 | 6 | ^ |
+| 7 | 7 | & |
+| 8 | 8 | * |
+| 9 | 9 | ( |
+| 0 | 0 | ) |
+| - | - | _ |
+| = | = | + |
+
+#### F-row — tap function key, hold system action
+
+| Key | Tap | Hold |
+|---|---|---|
+| F1 | F1 | Quake terminal dropdown (Ctrl+Alt+Q) |
+| F2 | F2 | Run command (Alt+F2) |
+| F3 | F3 | Decrease display brightness (Ctrl+Meta+↓) |
+| F4 | F4 | Increase display brightness (Ctrl+Meta+↑) |
+| F5 | F5 | Toggle mute (Alt+F5) |
+| F6 | F6 | Volume down (Alt+F6) |
+| F7 | F7 | Volume up (Alt+F7) |
+| F8 | F8 | Toggle microphone (Alt+F8) |
+| F9 | F9 | Screenshot (Alt+F9) |
+| F10 | F10 | Lock screen (Ctrl+Alt+Meta+L) |
+
+#### Top row — tap letter, hold shortcut
+
+| Key | Tap | Hold |
+|---|---|---|
+| Q | q | Ctrl+Q (quit) |
+| W | w | Ctrl+W (close tab) |
+| R | r | Ctrl+R (reload) |
+| T | t | Ctrl+T (new tab) |
+| Y | y | Home |
+| U | u | Page Down |
+| I | i | Page Up |
+| O | o | End |
+
+#### Brackets & punctuation — tap unshifted, hold shifted
+
+| Key | Tap | Hold |
+|---|---|---|
+| [ | [ | { |
+| ] | ] | } |
+| \ | \ | \| |
+| , | , | < |
+| . | . | > |
+| / | / | ? |
+
+#### Bottom row — tap letter, hold shortcut
+
+| Key | Tap | Hold |
+|---|---|---|
+| Z | z | Ctrl+Z (undo) |
+| X | x | Ctrl+X (cut) |
+| C | c | Ctrl+C (copy) |
+| V | v | Ctrl+V (paste) |
+
+#### Thumb cluster
+
+| Key | Tap | Hold |
+|---|---|---|
+| Backspace | Backspace | Delete |
+| Enter | Enter | Right Alt |
+| Left Meta (bottom row) | Left Meta | Layer 2 |
+| Spacebar | Space | Layer 3 |
+| Left Shift | Left Shift | Layer 4 |
+| Right Shift | Right Shift | Layer 5 |
+
+---
 
 ### Layer 2 — Window / Workspace
 
 ![Layer 2 — Window / Workspace](02-layer2-window-workspace.png)
 
-Held by the physical **Left Meta** key (bottom row). Right-hand keys drive GNOME window management and workspace navigation. **Y**=Shift+Meta+PgUp (move window to previous display), **O**=Shift+Meta+PgDn (move window to next display). **U**=Alt+F11 (workspace on the left), **I**=Alt+F12 (workspace on the right). **H/J/K/L**=Meta+Left/Down/Up/Right (GNOME workspace navigation). **N/M/,/.**=Alt+Meta+1/2/3/4 (switch directly to workspaces 1–4). **P**=close kitty tab (Ctrl+Meta+/), **[**=previous tab (Ctrl+Meta+,), **]**=next tab (Ctrl+Meta+.). **;/**=Shift+Meta+H/L (kitty scroll left/right). **F12** position reloads kanata config (`lrld`).
+Held by the physical **Left Meta** key (bottom row).
+
+| Key | Action | Description |
+|---|---|---|
+| Y | Shift+Meta+PgUp | Move window to previous display |
+| O | Shift+Meta+PgDn | Move window to next display |
+| U | Alt+F11 | Switch to workspace on the left |
+| I | Alt+F12 | Switch to workspace on the right |
+| H | Meta+Left | Previous workspace |
+| J | Meta+Down | Workspace down |
+| K | Meta+Up | Workspace up |
+| L | Meta+Right | Next workspace |
+| N | Alt+Meta+1 | Switch to workspace 1 |
+| M | Alt+Meta+2 | Switch to workspace 2 |
+| , | Alt+Meta+3 | Switch to workspace 3 |
+| . | Alt+Meta+4 | Switch to workspace 4 |
+| P | Ctrl+Meta+/ | Close kitty tab |
+| [ | Ctrl+Meta+, | Previous kitty tab |
+| ] | Ctrl+Meta+. | Next kitty tab |
+| ; | Shift+Meta+H | Scroll kitty left |
+| ' | Shift+Meta+L | Scroll kitty right |
+| F12 | lrld | Reload kanata config |
+
+---
 
 ### Layer 3 — Symbols
 
 ![Layer 3 — Symbols](03-layer3-symbols.png)
 
-Held by **Spacebar**. Programming symbols laid over the letter keys so brackets, pipes, and shifted characters are reachable without contorting for Shift. Top row: **Q/W/E/R/T**=! @ # $ %, **Y**=0, **U/I**=( ), **O/P**={ }. Home row: **A/S/D**=^ & *, **F**=/, **G**=` , **H**=~, **J**=|, **K**=:, **L**=\". Bottom row: **Z/X/C/V**=- + _ =, **B**=\\, **N/M**=< >, **,/.//**=, . ?. The F-row system shortcuts from Layer 1 stay active.
+Held by **Spacebar**. The F-row system shortcuts from Layer 1 stay active.
+
+| Key | Output | | Key | Output |
+|---|---|---|---|---|
+| Q | ! | | Y | 0 |
+| W | @ | | U | ( |
+| E | # | | I | ) |
+| R | $ | | O | { |
+| T | % | | P | } |
+| A | ^ | | H | ~ |
+| S | & | | J | \| |
+| D | * | | K | : |
+| F | / | | L | " |
+| G | ` | | | |
+| Z | - | | N | < |
+| X | + | | M | > |
+| C | _ | | , | , |
+| V | = | | . | . |
+| B | \ | | / | ? |
+
+---
 
 ### Layer 4 — Editing
 
 ![Layer 4 — Editing](04-layer4-editing.png)
 
-Held by **Left Shift**. **H/J/K/L** become arrow keys (← ↓ ↑ →). **Y/U/I/O** become mouse-wheel left/down/up/right. **[**=Ctrl+U (delete to beginning of line), **]**=Ctrl+K (delete to end of line). Bottom row: **N**=Ctrl+Backspace (delete word backward), **M**=Ctrl+Delete (delete word forward), **,**=Ctrl+W (delete word backward, terminal style), **.**=Alt+D (delete word forward). The F-row system shortcuts from Layer 1 stay active.
+Held by **Left Shift**. The F-row system shortcuts from Layer 1 stay active.
+
+| Key | Action | Description |
+|---|---|---|
+| H | ← | Arrow left |
+| J | ↓ | Arrow down |
+| K | ↑ | Arrow up |
+| L | → | Arrow right |
+| Y | Wheel left | Mouse-wheel emulation |
+| U | Wheel down | Mouse-wheel emulation |
+| I | Wheel up | Mouse-wheel emulation |
+| O | Wheel right | Mouse-wheel emulation |
+| [ | Ctrl+U | Delete to beginning of line |
+| ] | Ctrl+K | Delete to end of line |
+| N | Ctrl+Backspace | Delete word backward |
+| M | Ctrl+Delete | Delete word forward |
+| , | Ctrl+W | Delete word backward (terminal style) |
+| . | Alt+D | Delete word forward |
+
+---
 
 ### Layer 5 — Numbers
 
 ![Layer 5 — Numbers](05-layer5-numbers.png)
 
-Held by **Right Shift**. A left-hand numpad: top row **Q/W/E/R/T**=+ 9 8 7 -, home row **A/S/D/F/G**=/ 6 5 4 0, bottom row **Z/X/C/V**== 3 2 1. The F-row system shortcuts from Layer 1 stay active.
+Held by **Right Shift**. The F-row system shortcuts from Layer 1 stay active.
+
+| | Q | W | E | R | T |
+|---|---|---|---|---|---|
+| Top row | + | 9 | 8 | 7 | - |
+| Home row | / | 6 | 5 | 4 | 0 |
+| Bottom row | = | 3 | 2 | 1 | — |
 
 ---
 
@@ -76,30 +236,6 @@ Both timings default to **200 ms**. If you're seeing accidental holds or missed 
   hold-time 250
 )
 ```
-
-### Layer-toggle keys
-
-| Key | Tap | Hold |
-|---|---|---|
-| Left Meta (bottom row) | Left Meta | → **Layer 2** |
-| Spacebar | Space | → **Layer 3** |
-| Left Shift | Left Shift | → **Layer 4** |
-| Right Shift | Right Shift | → **Layer 5** |
-
-### Home-row modifiers
-
-| Key | Tap | Hold |
-|---|---|---|
-| A | a | Left Shift |
-| S | s | Left Meta |
-| D | d | Left Alt |
-| F | f | Left Ctrl |
-| H | h | Shift+` (GNOME Activities) |
-| J | j | Right Ctrl |
-| K | k | Right Alt |
-| L | l | Right Meta |
-| ; | ; | Right Shift |
-| ' | ' | " |
 
 ---
 
