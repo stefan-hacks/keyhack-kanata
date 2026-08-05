@@ -142,10 +142,10 @@ Held by the physical **Left Meta** key (bottom row).
 | O   | Shift+Meta+PgDn | Move window to next workspace     |
 | U   | Alt+F11         | Switch to workspace on the left   |
 | I   | Alt+F12         | Switch to workspace on the right  |
-| H   | Meta+Left       | Previous workspace                |
-| J   | Meta+Down       | Workspace down                    |
-| K   | Meta+Up         | Workspace up                      |
-| L   | Meta+Right      | Next workspace                    |
+| H   | Meta+Left       | split screen to left              |
+| J   | Meta+Down       | restore window original size      |
+| K   | Meta+Up         | maximize window                   |
+| L   | Meta+Right      | split screen to right             |
 | N   | Alt+Meta+1      | Switch to workspace 1             |
 | M   | Alt+Meta+2      | Switch to workspace 2             |
 | ,   | Alt+Meta+3      | Switch to workspace 3             |
