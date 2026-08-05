@@ -22,10 +22,10 @@
 ;; Aliases
 ;; Layer toggles — accessed by holding modifier keys
 (defalias
-  ;;; Spacebar → Layer 2: Symbols / programming characters
+  ;; Spacebar → Layer 2: Symbols / programming characters
   l2 (tap-hold $tap-time $hold-time spc (layer-toggle two))
 
-  ; Left Meta (S key) → Layer 3: Window/Workspace management
+  ;; Left Meta (S key) → Layer 3: Window/Workspace management
   l3 (tap-hold $tap-time $hold-time lmet (layer-toggle three))
 
   ;; Left Ctrl → Layer 4: Text editing / mouse wheel emulation
