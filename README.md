@@ -315,10 +315,10 @@ Layer 4 is designed for text editing and terminal-oriented workflows.
 
 | Key | Action |
 |---|---|
-| `H` | Wheel left |
-| `J` | Wheel down |
-| `K` | Wheel up |
-| `L` | Wheel right |
+| `Y` | Wheel left |
+| `U` | Wheel down |
+| `I` | Wheel up |
+| `O` | Wheel right |
 
 The aliases use `mwheel-*` with parameters `50` and `120`, as defined in the configuration.
 
